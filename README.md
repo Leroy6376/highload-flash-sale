@@ -37,6 +37,28 @@ but starts an IDE session only with a browser trigger/cookie or
 `XDEBUG_SESSION=1` for CLI. Configure the IDE to listen on port `9003` and map
 `/var/www` to the project root.
 
+### Laravel Boost on Windows + WSL
+
+Laravel Boost is configured to run in the project's Docker PHP container. This
+ensures that every MCP client uses PHP 8.5 and PostgreSQL rather than a locally
+installed PHP version.
+
+On a new computer:
+
+1. Install Docker Desktop and enable its WSL integration for the distribution
+   that contains the project.
+2. Clone the repository into the WSL filesystem and open that directory in
+   PhpStorm.
+3. Create `.env.docker` and set an application key as described above, then run
+   `make up`.
+4. Run `make boost-check`. It must report PHP 8.5 and `Database ... pgsql`.
+5. Restart the MCP client (for example, Codex or Junie) after it reads the
+   repository's shared MCP configuration.
+
+In PhpStorm, configure the PHP CLI interpreter as Docker Compose service `php`
+using the `docker-compose exec` lifecycle. This makes IDE tools, Artisan, tests,
+and debugging use the same PHP container as Laravel Boost.
+
 For an immutable local production-like stack, run `make prod-up`.
 
 PostgreSQL data is stored in the `postgres-data` Docker volume. Future services
