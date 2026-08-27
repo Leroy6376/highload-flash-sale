@@ -4,7 +4,7 @@ COMPOSE_PROD := $(COMPOSE_BASE) -f docker-compose.prod.yml --profile fpm
 
 .DEFAULT_GOAL := help
 
-.PHONY: help init key build up down restart ps logs shell artisan migrate fresh db-shell config test pint composer vite prod-build prod-up prod-down prod-ps
+.PHONY: help init key build up down restart ps logs shell artisan migrate fresh db-shell config test pint composer vite boost-install boost-update prod-build prod-up prod-down prod-ps
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*##"}; /^[a-zA-Z_-]+:.*##/ {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -60,6 +60,12 @@ composer: ## Run Composer, e.g. make composer cmd="require vendor/package"
 
 vite: ## Follow Vite logs
 	@$(COMPOSE_DEV) logs -f vite
+
+boost-install: ## Generate local Laravel Boost skills and MCP configuration
+	@php artisan boost:install --guidelines --skills --mcp --no-interaction
+
+boost-update: ## Update local Laravel Boost guidelines and skills
+	@php artisan boost:update --no-interaction
 
 config: ## Validate the resolved development Compose configuration
 	@$(COMPOSE_DEV) config --quiet
