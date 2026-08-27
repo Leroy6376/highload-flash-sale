@@ -17,6 +17,13 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
+        // Vite listens inside Docker on every interface; the browser reaches
+        // it through the port published on the host.
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+            port: 5173,
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },

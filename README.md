@@ -7,6 +7,47 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Docker
+
+Create a local Docker configuration and set a unique application key:
+
+```bash
+cp .env.docker.example .env.docker
+make key
+```
+
+Copy the printed `base64:` value to `APP_KEY` in `.env.docker`, then start the
+FPM profile:
+
+```bash
+make up
+```
+
+The development application is available at `http://localhost:8080`, Vite HMR
+at `http://localhost:5173`, and PostgreSQL for an IDE at `localhost:5432`.
+Run migrations with:
+
+```bash
+make migrate
+```
+
+Use `make help` for all commands. Development uses bind-mounted sources, Vite
+HMR, Composer dev dependencies, and Xdebug. Xdebug is enabled in the dev image
+but starts an IDE session only with a browser trigger/cookie or
+`XDEBUG_SESSION=1` for CLI. Configure the IDE to listen on port `9003` and map
+`/var/www` to the project root.
+
+For an immutable local production-like stack, run `make prod-up`.
+
+PostgreSQL data is stored in the `postgres-data` Docker volume. Future services
+such as RoadRunner/Octane, Redis, and RabbitMQ can be added as separate Compose
+profiles without changing the FPM stack.
+
+Docker images are separated by responsibility: `docker/php/Dockerfile` builds
+the PHP-FPM application (including the `app-dev` target with Xdebug), while
+`docker/nginx/Dockerfile` builds Nginx from the PHP image's `public` directory.
+This lets each runtime gain its own configuration and extensions independently.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

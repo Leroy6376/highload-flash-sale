@@ -1,0 +1,82 @@
+FROM composer:2.8 AS vendor
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --prefer-dist \
+    --no-scripts \
+    --optimize-autoloader
+
+FROM composer:2.8 AS vendor-dev
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+
+RUN composer install \
+    --no-interaction \
+    --no-progress \
+    --prefer-dist \
+    --no-scripts \
+    --optimize-autoloader
+
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.js ./
+
+RUN npm run build
+
+FROM php:8.5-fpm-alpine AS app
+
+WORKDIR /var/www
+
+RUN apk add --no-cache \
+        libpq \
+        libzip \
+    && apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        libpq-dev \
+        libzip-dev \
+    && docker-php-ext-install -j"$(nproc)" pdo_pgsql \
+    && docker-php-ext-install -j"$(nproc)" zip \
+    && apk del .build-deps
+
+COPY . ./
+COPY --from=vendor /app/vendor ./vendor
+COPY --from=frontend /app/public/build ./public/build
+COPY docker/app/entrypoint.sh /usr/local/bin/app-entrypoint
+
+RUN php artisan package:discover --ansi \
+    && mkdir -p bootstrap/cache storage/framework/{cache,views,sessions} storage/logs \
+    && chown -R www-data:www-data bootstrap/cache storage \
+    && chmod +x /usr/local/bin/app-entrypoint
+
+ENTRYPOINT ["/usr/local/bin/app-entrypoint"]
+CMD ["php-fpm"]
+
+FROM app AS app-dev
+
+RUN apk add --no-cache --virtual .xdebug-build \
+        $PHPIZE_DEPS \
+        linux-headers \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && apk del .xdebug-build
+
+COPY --from=composer:2.8 /usr/bin/composer /usr/local/bin/composer
+COPY --from=vendor-dev /app/vendor ./vendor
+COPY docker/php/conf.d/99-xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini
+
+RUN php artisan package:discover --ansi

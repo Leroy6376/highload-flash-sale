@@ -1,0 +1,42 @@
+services:
+  nginx:
+    volumes:
+      - ./:/var/www:ro
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: app-dev
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      XDEBUG_MODE: debug
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./:/var/www
+      - laravel-vendor:/var/www/vendor
+      - laravel-storage-dev:/var/www/storage
+
+  postgres:
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+
+  vite:
+    image: node:22-alpine
+    profiles: [fpm]
+    working_dir: /var/www
+    ports:
+      - "${VITE_PORT:-5173}:5173"
+    volumes:
+      - ./:/var/www
+      - node-modules:/var/www/node_modules
+    command: >-
+      sh -c 'if [ ! -d node_modules/.bin ]; then npm ci --no-audit --no-fund; fi;
+      npm run dev -- --host 0.0.0.0'
+
+volumes:
+  laravel-storage-dev:
+  laravel-vendor:
+  node-modules:
