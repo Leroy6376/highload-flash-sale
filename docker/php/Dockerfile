@@ -62,9 +62,9 @@ COPY --from=vendor /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
 COPY docker/app/entrypoint.sh /usr/local/bin/app-entrypoint
 
-RUN php artisan package:discover --ansi \
-    && mkdir -p bootstrap/cache storage/framework/{cache,views,sessions} storage/logs \
+RUN mkdir -p bootstrap/cache storage/framework/{cache,views,sessions} storage/logs \
     && chown -R www-data:www-data bootstrap/cache storage \
+    && php artisan package:discover --ansi \
     && chmod +x /usr/local/bin/app-entrypoint
 
 ENTRYPOINT ["/usr/local/bin/app-entrypoint"]
