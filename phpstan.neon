@@ -1,0 +1,42 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - vendor/larastan/larastan/extension.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
+parameters:
+    level: 10
+
+    paths:
+        - app
+        - bootstrap
+        - config
+        - database
+        - routes
+        - tests
+
+    tmpDir: storage/framework/phpstan
+    phpVersion: 80500
+
+    checkMissingCallableSignature: true
+    checkBenevolentUnionTypes: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkUninitializedProperties: true
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: true
+
+    databaseMigrationsPath:
+        - database/migrations
+    configDirectories:
+        - config
+    viewDirectories:
+        - resources/views
+    checkAuthCallsWhenInRequestScope: true
+    checkConfigTypes: true
+    checkModelMethodVisibility: true
+    checkModelProperties: true
+    checkOctaneCompatibility: true
+    checkUnusedViews: true
+    noUnnecessaryCollectionCall: true
+    noUnnecessaryEnumerableToArrayCalls: true
+    parseModelCastsMethod: true

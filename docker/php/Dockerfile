@@ -1,7 +1,23 @@
-FROM composer:2.8 AS vendor
+FROM php:8.5-fpm-alpine AS php-base
+
+WORKDIR /var/www
+
+RUN apk add --no-cache \
+        libpq \
+        libzip \
+    && apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        libpq-dev \
+        libzip-dev \
+    && docker-php-ext-install -j"$(nproc)" pdo_pgsql \
+    && docker-php-ext-install -j"$(nproc)" zip \
+    && apk del .build-deps
+
+FROM php-base AS vendor
 
 WORKDIR /app
 
+COPY --from=composer:2.8 /usr/bin/composer /usr/local/bin/composer
 COPY composer.json composer.lock ./
 
 RUN composer install \
@@ -12,10 +28,11 @@ RUN composer install \
     --no-scripts \
     --optimize-autoloader
 
-FROM composer:2.8 AS vendor-dev
+FROM php-base AS vendor-dev
 
 WORKDIR /app
 
+COPY --from=composer:2.8 /usr/bin/composer /usr/local/bin/composer
 COPY composer.json composer.lock ./
 
 RUN composer install \
@@ -38,20 +55,7 @@ COPY vite.config.js ./
 
 RUN npm run build
 
-FROM php:8.5-fpm-alpine AS app
-
-WORKDIR /var/www
-
-RUN apk add --no-cache \
-        libpq \
-        libzip \
-    && apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        libpq-dev \
-        libzip-dev \
-    && docker-php-ext-install -j"$(nproc)" pdo_pgsql \
-    && docker-php-ext-install -j"$(nproc)" zip \
-    && apk del .build-deps
+FROM php-base AS app
 
 COPY . ./
 COPY --from=vendor /app/vendor ./vendor

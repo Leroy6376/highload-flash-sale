@@ -4,7 +4,7 @@ COMPOSE_PROD := $(COMPOSE_BASE) -f docker-compose.prod.yml --profile fpm
 
 .DEFAULT_GOAL := help
 
-.PHONY: help init key build up down restart ps logs shell artisan migrate fresh db-shell config test pint composer vite boost-install boost-update boost-check prod-build prod-up prod-down prod-ps
+.PHONY: help init key build up down restart ps logs shell artisan migrate fresh db-shell config test pint pint-fix stan stan-clear-cache audit rector rector-fix deptrac check composer vite boost-install boost-update boost-check prod-build prod-up prod-down prod-ps
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*##"}; /^[a-zA-Z_-]+:.*##/ {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -54,6 +54,35 @@ test: ## Run Laravel tests in the development PHP container
 
 pint: ## Run Laravel Pint in the development PHP container
 	@$(COMPOSE_DEV) exec php vendor/bin/pint --test
+
+pint-fix: ## Fix Laravel Pint style issues in the development PHP container
+	@$(COMPOSE_DEV) exec php vendor/bin/pint
+
+stan: ## Run Larastan static analysis in the development PHP container
+	@$(COMPOSE_DEV) exec php vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+stan-clear-cache: ## Clear the Larastan result cache
+	@$(COMPOSE_DEV) exec php vendor/bin/phpstan clear-result-cache
+
+audit: ## Audit Composer dependencies for known vulnerabilities
+	@$(COMPOSE_DEV) exec php composer audit --locked
+
+rector: ## Preview Rector refactorings without changing files
+	@$(COMPOSE_DEV) exec php vendor/bin/rector process --dry-run --no-progress-bar --memory-limit=1G
+
+rector-fix: ## Apply Rector refactorings
+	@$(COMPOSE_DEV) exec php vendor/bin/rector process --no-progress-bar --memory-limit=1G
+
+deptrac: ## Enforce Domain module dependency boundaries
+	@$(COMPOSE_DEV) exec php vendor/bin/deptrac --cache-file=storage/framework/deptrac.cache analyse
+
+check: ## Run all code-quality checks and tests
+	@$(MAKE) pint
+	@$(MAKE) stan
+	@$(MAKE) audit
+	@$(MAKE) rector
+	@$(MAKE) deptrac
+	@$(MAKE) test
 
 composer: ## Run Composer, e.g. make composer cmd="require vendor/package"
 	@$(COMPOSE_DEV) exec php composer $(cmd)

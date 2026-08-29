@@ -16,7 +16,6 @@ services:
       - host.docker.internal:host-gateway
     volumes:
       - ./:/var/www
-      - laravel-vendor:/var/www/vendor
       - laravel-storage-dev:/var/www/storage
 
   postgres:
@@ -38,5 +37,4 @@ services:
 
 volumes:
   laravel-storage-dev:
-  laravel-vendor:
   node-modules:

@@ -32,6 +32,24 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Stick to existing directory structure; don't create new base folders without approval.
 - Do not change the application's dependencies without approval.
 
+### Default Architecture: Domain-Oriented Modular Monolith
+
+- Default to a **Domain-oriented Modular Monolith / Vertical Slice Architecture**. Organize application code by business domain under `app/Domain/<Domain>/`, not by a single application-wide technical layer.
+- Keep each domain self-contained. Place its HTTP layer, Actions, Models, Services, Events, Jobs, Policies, Rules, and Contracts in that domain only when they are needed. Do not create empty folders or speculative abstractions.
+- Treat modules as boundaries: communicate with another module through a public Action, a domain event, or an explicit Contract. Do not couple a module to another module's internal implementation.
+- Use pragmatic DDD only where business rules are genuinely complex and valuable to model explicitly, especially orders, stock reservation, pricing, and promotions. Keep straightforward CRUD conventional Laravel.
+- Apply Clean/Hexagonal boundaries only at external or replaceable integrations, such as payment providers, external inventory systems, or notification channels. Define a Contract and bind its implementation in a service provider when testability or substitutability justifies it. Do not wrap ordinary Eloquent access in repositories by default.
+
+### Actions and Services
+
+- An Action represents one complete business use case, such as `CreateOrderAction`, `CancelOrderAction`, or `ApplyPromotionAction`. Give it a single explicit public `handle()` method and let it orchestrate the scenario.
+- Controllers must stay thin: validate through a Form Request, invoke an Action, and return a Resource or response. They must not contain business rules, pricing logic, stock logic, or transaction orchestration.
+- Use a Service for a cohesive algorithm, business capability, or reusable piece of work used by one or more Actions, such as `OrderPricingService` or `StockReservationService`. Avoid vague, catch-all classes such as `OrderService`.
+- Keep simple behavior close to the model when it concerns only that model's state, for example `Order::canBeCancelled()` or `Order::cancel()`.
+- Prefer constructor injection. Do not use `app()` or `resolve()` where normal dependency injection can make dependencies explicit.
+- Use events and queued Jobs for secondary, durable, or asynchronous work. Dispatch events that depend on persisted data only after the enclosing database transaction commits.
+- For critical flash-sale writes, make the Action transactional, enforce idempotency where applicable, and use appropriate database locking for stock reservation.
+
 ## Frontend Bundling
 
 - If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
