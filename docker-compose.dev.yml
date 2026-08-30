@@ -2,6 +2,7 @@ services:
   nginx:
     volumes:
       - ./:/var/www:ro
+      - laravel-storage-dev:/var/www/storage:ro
 
   php:
     build:

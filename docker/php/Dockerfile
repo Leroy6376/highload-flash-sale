@@ -4,12 +4,15 @@ WORKDIR /var/www
 
 RUN apk add --no-cache \
         libpq \
+        sqlite-libs \
         libzip \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         libpq-dev \
+        sqlite-dev \
         libzip-dev \
     && docker-php-ext-install -j"$(nproc)" pdo_pgsql \
+    && docker-php-ext-install -j"$(nproc)" pdo_sqlite \
     && docker-php-ext-install -j"$(nproc)" zip \
     && apk del .build-deps
 
