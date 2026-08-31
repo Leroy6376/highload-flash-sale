@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddRequestLogContext
 {
+    /**
+     * @param Closure(Request): Response $next
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $requestId = (string) Str::ulid();
