@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
  */
 class EventFactory extends Factory
 {
+    #[\Override]
     protected $model = Event::class;
 
     /**
@@ -23,15 +24,18 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
+        $now = now('Europe/Moscow');
+
         return [
             'slug' => Str::slug(fake()->unique()->bothify('event-####-????')),
             'title' => fake()->sentence(4),
             'short_description' => fake()->sentence(),
             'description' => fake()->paragraphs(3, true),
-            'starts_at' => now()->addMonth(),
-            'ends_at' => now()->addMonth()->addHours(3),
-            'sales_starts_at' => now()->subWeek(),
-            'sales_ends_at' => now()->addMonth()->subHour(),
+            'timezone' => 'Europe/Moscow',
+            'starts_at' => $now->copy()->addMonth(),
+            'ends_at' => $now->copy()->addMonth()->addHours(3),
+            'sales_starts_at' => $now->copy()->subWeek(),
+            'sales_ends_at' => $now->copy()->addMonth()->subHour(),
             'status' => EventStatus::Draft,
         ];
     }
@@ -45,10 +49,14 @@ class EventFactory extends Factory
 
     public function upcoming(): static
     {
-        return $this->state(fn (array $attributes): array => [
-            'ends_at' => now()->addMonth()->addHours(3),
-            'sales_ends_at' => now()->addMonth()->subHour(),
-            'starts_at' => now()->addMonth(),
-        ]);
+        return $this->state(function (array $attributes): array {
+            $now = now('Europe/Moscow');
+
+            return [
+                'ends_at' => $now->copy()->addMonth()->addHours(3),
+                'sales_ends_at' => $now->copy()->addMonth()->subHour(),
+                'starts_at' => $now->copy()->addMonth(),
+            ];
+        });
     }
 }

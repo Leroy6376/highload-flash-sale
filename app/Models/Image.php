@@ -2,26 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Catalog\Models;
+namespace App\Models;
 
-use App\Domain\Catalog\Enums\ImageCollection;
-use Database\Factories\EventImageFactory;
+use App\Enums\ImageCollection;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[Fillable(['collection', 'path', 'alt_text', 'sort_order'])]
-class EventImage extends Model
+class Image extends Model
 {
-    /** @use HasFactory<EventImageFactory> */
+    /** @use HasFactory<\Database\Factories\ImageFactory> */
     use HasFactory, HasUuids;
 
-    /** @return BelongsTo<Event, $this> */
-    public function event(): BelongsTo
+    /** @return MorphTo<Model, $this> */
+    public function imageable(): MorphTo
     {
-        return $this->belongsTo(Event::class);
+        return $this->morphTo();
     }
 
     protected function casts(): array
@@ -30,10 +29,5 @@ class EventImage extends Model
             'collection' => ImageCollection::class,
             'sort_order' => 'integer',
         ];
-    }
-
-    protected static function newFactory(): EventImageFactory
-    {
-        return EventImageFactory::new();
     }
 }

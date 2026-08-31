@@ -19,6 +19,7 @@ return new class() extends Migration
             $table->string('title');
             $table->string('short_description')->nullable();
             $table->text('description')->nullable();
+            $table->string('timezone')->default('Europe/Moscow');
             $table->timestampTz('starts_at');
             $table->timestampTz('ends_at')->nullable();
             $table->timestampTz('sales_starts_at')->nullable();

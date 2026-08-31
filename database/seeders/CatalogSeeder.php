@@ -6,12 +6,10 @@ namespace Database\Seeders;
 
 use App\Domain\Catalog\Enums\Currency;
 use App\Domain\Catalog\Enums\EventStatus;
-use App\Domain\Catalog\Enums\ImageCollection;
 use App\Domain\Catalog\Enums\TicketTypeStatus;
 use App\Domain\Catalog\Models\Event;
-use App\Domain\Catalog\Models\EventImage;
 use App\Domain\Catalog\Models\TicketType;
-use App\Domain\Catalog\Models\TicketTypeImage;
+use App\Enums\ImageCollection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,6 +31,7 @@ use Illuminate\Support\Facades\Storage;
  *     title: string,
  *     short_description: string,
  *     description: string,
+ *     timezone: string,
  *     starts_at: string,
  *     ends_at: string,
  *     sales_starts_at: string,
@@ -54,7 +53,7 @@ class CatalogSeeder extends Seeder
                 $eventData,
             );
 
-            $this->seedEventImages($event);
+            $this->seedImages($event, "catalog/events/{$event->slug}", $event->slug);
 
             foreach ($ticketTypes as $ticketTypeData) {
                 $ticketType = $event->ticketTypes()->updateOrCreate(
@@ -62,7 +61,7 @@ class CatalogSeeder extends Seeder
                     $ticketTypeData,
                 );
 
-                $this->seedTicketTypeImages($ticketType, $event->slug);
+                $this->seedImages($ticketType, "catalog/ticket-types/{$event->slug}/{$ticketType->slug}", $event->slug);
             }
         }
     }
@@ -78,10 +77,11 @@ class CatalogSeeder extends Seeder
                 'title' => 'Night Waves 2026',
                 'short_description' => 'Ночной фестиваль электронной музыки под открытым небом.',
                 'description' => 'Night Waves объединяет лайв-сеты, визуальное искусство и электронную музыку на одной сцене.',
-                'starts_at' => '2026-10-17 19:00:00+03:00',
-                'ends_at' => '2026-10-18 03:00:00+03:00',
-                'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                'sales_ends_at' => '2026-10-17 22:00:00+03:00',
+                'timezone' => 'Europe/Moscow',
+                'starts_at' => '2026-10-17T19:00:00+03:00',
+                'ends_at' => '2026-10-18T03:00:00+03:00',
+                'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                'sales_ends_at' => '2026-10-17T22:00:00+03:00',
                 'status' => EventStatus::Published,
                 'ticket_types' => [
                     [
@@ -92,8 +92,8 @@ class CatalogSeeder extends Seeder
                         'currency' => Currency::Rub,
                         'capacity' => 1_000,
                         'sales_limit_per_user' => 4,
-                        'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                        'sales_ends_at' => '2026-10-17 22:00:00+03:00',
+                        'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                        'sales_ends_at' => '2026-10-17T22:00:00+03:00',
                         'status' => TicketTypeStatus::Active,
                     ],
                     [
@@ -104,8 +104,8 @@ class CatalogSeeder extends Seeder
                         'currency' => Currency::Rub,
                         'capacity' => 200,
                         'sales_limit_per_user' => 2,
-                        'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                        'sales_ends_at' => '2026-10-17 22:00:00+03:00',
+                        'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                        'sales_ends_at' => '2026-10-17T22:00:00+03:00',
                         'status' => TicketTypeStatus::Active,
                     ],
                 ],
@@ -115,10 +115,11 @@ class CatalogSeeder extends Seeder
                 'title' => 'Дом тишины',
                 'short_description' => 'Камерная современная постановка о памяти и выборе.',
                 'description' => 'Новая театральная работа, в которой свет, музыка и пауза становятся равноправными героями истории.',
-                'starts_at' => '2026-11-21 19:30:00+03:00',
-                'ends_at' => '2026-11-21 21:15:00+03:00',
-                'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                'sales_ends_at' => '2026-11-21 19:30:00+03:00',
+                'timezone' => 'Europe/Moscow',
+                'starts_at' => '2026-11-21T19:30:00+03:00',
+                'ends_at' => '2026-11-21T21:15:00+03:00',
+                'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                'sales_ends_at' => '2026-11-21T19:30:00+03:00',
                 'status' => EventStatus::Published,
                 'ticket_types' => [
                     [
@@ -129,8 +130,8 @@ class CatalogSeeder extends Seeder
                         'currency' => Currency::Rub,
                         'capacity' => 350,
                         'sales_limit_per_user' => 6,
-                        'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                        'sales_ends_at' => '2026-11-21 19:30:00+03:00',
+                        'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                        'sales_ends_at' => '2026-11-21T19:30:00+03:00',
                         'status' => TicketTypeStatus::Active,
                     ],
                     [
@@ -141,8 +142,8 @@ class CatalogSeeder extends Seeder
                         'currency' => Currency::Rub,
                         'capacity' => 50,
                         'sales_limit_per_user' => 2,
-                        'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                        'sales_ends_at' => '2026-11-21 19:30:00+03:00',
+                        'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                        'sales_ends_at' => '2026-11-21T19:30:00+03:00',
                         'status' => TicketTypeStatus::Active,
                     ],
                 ],
@@ -152,10 +153,11 @@ class CatalogSeeder extends Seeder
                 'title' => 'Вселенная внутри нас',
                 'short_description' => 'Лекция в планетарии о масштабе космоса и человеческом любопытстве.',
                 'description' => 'Популярный астрофизик проведёт зрителей от ближайших планет к далёким галактикам и ответит на вопросы после лекции.',
-                'starts_at' => '2026-12-05 18:00:00+03:00',
-                'ends_at' => '2026-12-05 20:00:00+03:00',
-                'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                'sales_ends_at' => '2026-12-05 18:00:00+03:00',
+                'timezone' => 'Europe/Moscow',
+                'starts_at' => '2026-12-05T18:00:00+03:00',
+                'ends_at' => '2026-12-05T20:00:00+03:00',
+                'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                'sales_ends_at' => '2026-12-05T18:00:00+03:00',
                 'status' => EventStatus::Published,
                 'ticket_types' => [
                     [
@@ -166,8 +168,8 @@ class CatalogSeeder extends Seeder
                         'currency' => Currency::Rub,
                         'capacity' => 500,
                         'sales_limit_per_user' => 6,
-                        'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                        'sales_ends_at' => '2026-12-05 18:00:00+03:00',
+                        'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                        'sales_ends_at' => '2026-12-05T18:00:00+03:00',
                         'status' => TicketTypeStatus::Active,
                     ],
                     [
@@ -178,8 +180,8 @@ class CatalogSeeder extends Seeder
                         'currency' => Currency::Rub,
                         'capacity' => 100,
                         'sales_limit_per_user' => 2,
-                        'sales_starts_at' => '2026-08-30 10:00:00+03:00',
-                        'sales_ends_at' => '2026-12-05 18:00:00+03:00',
+                        'sales_starts_at' => '2026-08-30T10:00:00+03:00',
+                        'sales_ends_at' => '2026-12-05T18:00:00+03:00',
                         'status' => TicketTypeStatus::Active,
                     ],
                 ],
@@ -187,31 +189,14 @@ class CatalogSeeder extends Seeder
         ];
     }
 
-    private function seedEventImages(Event $event): void
-    {
-        foreach ($this->imageDefinitions($event->slug) as $image) {
-            $destination = "catalog/events/{$event->slug}/{$image['filename']}";
-            $this->copyImage($image['source'], $destination);
-
-            EventImage::query()->updateOrCreate(
-                $this->eventImageIdentity($event, $image['collection'], $destination),
-                [
-                    'path' => $destination,
-                    'alt_text' => $image['alt_text'],
-                    'sort_order' => $image['sort_order'],
-                ],
-            );
-        }
-    }
-
-    private function seedTicketTypeImages(TicketType $ticketType, string $eventSlug): void
+    private function seedImages(Event|TicketType $imageable, string $destinationDirectory, string $eventSlug): void
     {
         foreach ($this->imageDefinitions($eventSlug) as $image) {
-            $destination = "catalog/ticket-types/{$eventSlug}/{$ticketType->slug}/{$image['filename']}";
+            $destination = "{$destinationDirectory}/{$image['filename']}";
             $this->copyImage($image['source'], $destination);
 
-            TicketTypeImage::query()->updateOrCreate(
-                $this->ticketTypeImageIdentity($ticketType, $image['collection'], $destination),
+            $imageable->images()->updateOrCreate(
+                $this->imageIdentity($image['collection'], $destination),
                 [
                     'path' => $destination,
                     'alt_text' => $image['alt_text'],
@@ -222,29 +207,11 @@ class CatalogSeeder extends Seeder
     }
 
     /**
-     * @return array{event_id: string, collection: string, path?: string}
+     * @return array{collection: string, path?: string}
      */
-    private function eventImageIdentity(Event $event, ImageCollection $collection, string $path): array
+    private function imageIdentity(ImageCollection $collection, string $path): array
     {
         $identity = [
-            'event_id' => $event->id,
-            'collection' => $collection->value,
-        ];
-
-        if ($collection === ImageCollection::Gallery) {
-            $identity['path'] = $path;
-        }
-
-        return $identity;
-    }
-
-    /**
-     * @return array{ticket_type_id: string, collection: string, path?: string}
-     */
-    private function ticketTypeImageIdentity(TicketType $ticketType, ImageCollection $collection, string $path): array
-    {
-        $identity = [
-            'ticket_type_id' => $ticketType->id,
             'collection' => $collection->value,
         ];
 

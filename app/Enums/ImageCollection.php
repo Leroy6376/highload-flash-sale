@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Catalog\Enums;
+namespace App\Enums;
 
 enum ImageCollection: string
 {

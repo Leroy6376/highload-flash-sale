@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
  */
 class TicketTypeFactory extends Factory
 {
+    #[\Override]
     protected $model = TicketType::class;
 
     /**
@@ -25,6 +26,8 @@ class TicketTypeFactory extends Factory
      */
     public function definition(): array
     {
+        $now = now();
+
         return [
             'event_id' => Event::factory(),
             'slug' => Str::slug(fake()->unique()->bothify('ticket-type-####-????')),
@@ -34,8 +37,8 @@ class TicketTypeFactory extends Factory
             'currency' => Currency::Rub,
             'capacity' => fake()->numberBetween(50, 1_000),
             'sales_limit_per_user' => fake()->numberBetween(1, 6),
-            'sales_starts_at' => now()->subWeek(),
-            'sales_ends_at' => now()->addMonth()->subHour(),
+            'sales_starts_at' => $now->copy()->subWeek(),
+            'sales_ends_at' => $now->copy()->addMonth()->subHour(),
             'status' => TicketTypeStatus::Draft,
         ];
     }

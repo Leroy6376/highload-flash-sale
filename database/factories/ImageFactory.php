@@ -4,29 +4,31 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Catalog\Enums\ImageCollection;
-use App\Domain\Catalog\Models\TicketType;
-use App\Domain\Catalog\Models\TicketTypeImage;
+use App\Domain\Catalog\Models\Event;
+use App\Enums\ImageCollection;
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<TicketTypeImage>
+ * @extends Factory<Image>
  */
-class TicketTypeImageFactory extends Factory
+class ImageFactory extends Factory
 {
-    protected $model = TicketTypeImage::class;
+    #[\Override]
+    protected $model = Image::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array<model-property<TicketTypeImage>, mixed>
+     * @return array<model-property<Image>, mixed>
      */
     public function definition(): array
     {
         return [
-            'ticket_type_id' => TicketType::factory(),
+            'imageable_type' => new Event()->getMorphClass(),
+            'imageable_id' => Event::factory(),
             'collection' => ImageCollection::Gallery,
-            'path' => 'catalog/ticket-types/'.fake()->uuid().'.png',
+            'path' => 'catalog/images/'.fake()->uuid().'.png',
             'alt_text' => fake()->sentence(3),
             'sort_order' => 0,
         ];

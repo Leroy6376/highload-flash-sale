@@ -14,19 +14,19 @@ return new class() extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_type_images', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('ticket_type_id')->constrained()->cascadeOnDelete();
+            $table->uuidMorphs('imageable');
             $table->string('collection');
             $table->string('path');
             $table->string('alt_text')->nullable();
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
 
-            $table->index(['ticket_type_id', 'collection', 'sort_order']);
+            $table->index(['imageable_type', 'imageable_id', 'collection', 'sort_order']);
         });
 
-        DB::statement("CREATE UNIQUE INDEX ticket_type_images_one_announcement_per_ticket_type ON ticket_type_images (ticket_type_id) WHERE collection = 'announcement'");
+        DB::statement("CREATE UNIQUE INDEX images_one_announcement_per_imageable ON images (imageable_type, imageable_id) WHERE collection = 'announcement'");
     }
 
     /**
@@ -34,8 +34,8 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP INDEX IF EXISTS ticket_type_images_one_announcement_per_ticket_type');
+        DB::statement('DROP INDEX IF EXISTS images_one_announcement_per_imageable');
 
-        Schema::dropIfExists('ticket_type_images');
+        Schema::dropIfExists('images');
     }
 };

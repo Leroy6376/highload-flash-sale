@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\Catalog\Models;
 
 use App\Domain\Catalog\Enums\Currency;
-use App\Domain\Catalog\Enums\ImageCollection;
 use App\Domain\Catalog\Enums\TicketTypeStatus;
+use App\Models\Concerns\HasImages;
 use Database\Factories\TicketTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
     'slug',
@@ -31,33 +29,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class TicketType extends Model
 {
     /** @use HasFactory<TicketTypeFactory> */
-    use HasFactory, HasUuids;
+    use HasFactory, HasImages, HasUuids;
 
     /** @return BelongsTo<Event, $this> */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
-    }
-
-    /** @return HasMany<TicketTypeImage, $this> */
-    public function images(): HasMany
-    {
-        /** @phpstan-ignore-next-line */
-        return $this->hasMany(TicketTypeImage::class)->orderBy('sort_order')->orderBy('id');
-    }
-
-    /** @return HasOne<TicketTypeImage, $this> */
-    public function announcementImage(): HasOne
-    {
-        /** @phpstan-ignore-next-line */
-        return $this->hasOne(TicketTypeImage::class)->where('collection', ImageCollection::Announcement->value);
-    }
-
-    /** @return HasMany<TicketTypeImage, $this> */
-    public function galleryImages(): HasMany
-    {
-        /** @phpstan-ignore-next-line */
-        return $this->hasMany(TicketTypeImage::class)->where('collection', ImageCollection::Gallery->value)->orderBy('sort_order')->orderBy('id');
     }
 
     protected function casts(): array
