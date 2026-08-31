@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: 'Highload Flash Sale API'
+  description: 'Документация HTTP API приложения.'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8080'
+tags: []
+paths: []

@@ -4,7 +4,7 @@ COMPOSE_PROD := $(COMPOSE_BASE) -f docker-compose.prod.yml --profile fpm
 
 .DEFAULT_GOAL := help
 
-.PHONY: help init key build up down restart ps logs shell artisan migrate fresh db-shell config test pint pint-fix stan stan-clear-cache audit rector rector-fix deptrac check composer vite boost-install boost-update boost-check prod-build prod-up prod-down prod-ps
+.PHONY: help init key build up down restart ps logs shell artisan migrate fresh db-shell config test pint pint-fix stan stan-clear-cache audit rector rector-fix deptrac check composer scribe vite boost-install boost-update boost-check prod-build prod-up prod-down prod-ps
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*##"}; /^[a-zA-Z_-]+:.*##/ {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -87,6 +87,9 @@ check: ## Run all code-quality checks and tests
 
 composer: ## Run Composer, e.g. make composer cmd="require vendor/package"
 	@$(COMPOSE_DEV) exec php composer $(cmd)
+
+scribe: ## Generate API documentation with Scribe
+	@$(COMPOSE_DEV) exec php php artisan scribe:generate --no-interaction
 
 vite: ## Follow Vite logs
 	@$(COMPOSE_DEV) logs -f vite

@@ -32,6 +32,7 @@
 /storage/pail
 /vendor
 /boost.json
+/.scribe/
 /CLAUDE.md
 _ide_helper.php
 Homestead.json
