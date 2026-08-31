@@ -3,6 +3,7 @@ FROM php:8.5-fpm-alpine AS php-base
 WORKDIR /var/www
 
 RUN apk add --no-cache \
+        git \
         libpq \
         sqlite-libs \
         libzip \
@@ -15,6 +16,8 @@ RUN apk add --no-cache \
     && docker-php-ext-install -j"$(nproc)" pdo_sqlite \
     && docker-php-ext-install -j"$(nproc)" zip \
     && apk del .build-deps
+
+RUN git config --system --add safe.directory /var/www
 
 FROM php-base AS vendor
 

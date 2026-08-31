@@ -12,12 +12,13 @@
 Create a local Docker configuration and set a unique application key:
 
 ```bash
-cp .env.docker.example .env.docker
+make init
 make key
 ```
 
-Copy the printed `base64:` value to `APP_KEY` in `.env.docker`, then start the
-FPM profile:
+`make init` creates the required Laravel `.env` and Docker Compose
+`.env.docker` files. `make key` writes `APP_KEY` to `.env`. Then start the FPM
+profile:
 
 ```bash
 make up
@@ -49,8 +50,7 @@ On a new computer:
    that contains the project.
 2. Clone the repository into the WSL filesystem and open that directory in
    PhpStorm.
-3. Create `.env.docker` and set an application key as described above, then run
-   `make up`.
+3. Run `make init`, then `make key` and `make up`.
 4. Run `make boost-check`. It must report PHP 8.5 and `Database ... pgsql`.
 5. Restart the MCP client (for example, Codex or Junie) after it reads the
    repository's shared MCP configuration.

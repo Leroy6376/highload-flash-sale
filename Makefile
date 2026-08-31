@@ -10,11 +10,12 @@ help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*##"}; /^[a-zA-Z_-]+:.*##/ {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 init: ## Create local Docker environment file
+	@test -f .env || cp .env.example .env
 	@test -f .env.docker || cp .env.docker.example .env.docker
-	@echo "Set APP_KEY in .env.docker with: make key"
+	@echo "Set APP_KEY in .env with: make key"
 
-key: ## Print a generated Laravel APP_KEY
-	@$(COMPOSE_DEV) run --rm --no-deps php php artisan key:generate --show
+key: ## Generate the Laravel APP_KEY in .env
+	@$(COMPOSE_DEV) run --rm --no-deps php php artisan key:generate --force
 
 build: ## Build development images
 	@$(COMPOSE_DEV) build

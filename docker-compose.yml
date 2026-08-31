@@ -6,17 +6,7 @@ x-app: &app
     dockerfile: docker/php/Dockerfile
     target: app
   env_file:
-    - .env.docker
-  environment:
-    APP_ENV: ${APP_ENV:-local}
-    APP_DEBUG: ${APP_DEBUG:-true}
-    APP_URL: ${APP_URL:-http://localhost:8080}
-    DB_CONNECTION: pgsql
-    DB_HOST: postgres
-    DB_PORT: 5432
-    DB_DATABASE: ${POSTGRES_DB:-laravel}
-    DB_USERNAME: ${POSTGRES_USER:-laravel}
-    DB_PASSWORD: ${POSTGRES_PASSWORD:-laravel}
+    - .env
   depends_on:
     postgres:
       condition: service_healthy

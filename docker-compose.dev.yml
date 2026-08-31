@@ -10,13 +10,12 @@ services:
       dockerfile: docker/php/Dockerfile
       target: app-dev
     environment:
-      APP_ENV: local
-      APP_DEBUG: "true"
       XDEBUG_MODE: debug
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
       - ./:/var/www
+      - laravel-vendor-dev:/var/www/vendor
       - laravel-storage-dev:/var/www/storage
 
   postgres:
@@ -37,5 +36,6 @@ services:
       npm run dev -- --host 0.0.0.0'
 
 volumes:
+  laravel-vendor-dev:
   laravel-storage-dev:
   node-modules:

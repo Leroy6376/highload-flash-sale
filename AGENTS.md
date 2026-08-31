@@ -7,7 +7,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 ## Foundational Context
 
-This application runs in Docker. Its PHP application image is based on `php:8.5-fpm-alpine`; use the Docker Compose services to run application commands. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
+This application is a Laravel application running on PHP 8.5. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
 
 Before relying on a package's API, confirm its installed version:
 - PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
@@ -32,24 +32,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Stick to existing directory structure; don't create new base folders without approval.
 - Do not change the application's dependencies without approval.
 
-### Default Architecture: Domain-Oriented Modular Monolith
-
-- Default to a **Domain-oriented Modular Monolith / Vertical Slice Architecture**. Organize application code by business domain under `app/Domain/<Domain>/`, not by a single application-wide technical layer.
-- Keep each domain self-contained. Place its HTTP layer, Actions, Models, Services, Events, Jobs, Policies, Rules, and Contracts in that domain only when they are needed. Do not create empty folders or speculative abstractions.
-- Treat modules as boundaries: communicate with another module through a public Action, a domain event, or an explicit Contract. Do not couple a module to another module's internal implementation.
-- Use pragmatic DDD only where business rules are genuinely complex and valuable to model explicitly, especially orders, stock reservation, pricing, and promotions. Keep straightforward CRUD conventional Laravel.
-- Apply Clean/Hexagonal boundaries only at external or replaceable integrations, such as payment providers, external inventory systems, or notification channels. Define a Contract and bind its implementation in a service provider when testability or substitutability justifies it. Do not wrap ordinary Eloquent access in repositories by default.
-
-### Actions and Services
-
-- An Action represents one complete business use case, such as `CreateOrderAction`, `CancelOrderAction`, or `ApplyPromotionAction`. Give it a single explicit public `handle()` method and let it orchestrate the scenario.
-- Controllers must stay thin: validate through a Form Request, invoke an Action, and return a Resource or response. They must not contain business rules, pricing logic, stock logic, or transaction orchestration.
-- Use a Service for a cohesive algorithm, business capability, or reusable piece of work used by one or more Actions, such as `OrderPricingService` or `StockReservationService`. Avoid vague, catch-all classes such as `OrderService`.
-- Keep simple behavior close to the model when it concerns only that model's state, for example `Order::canBeCancelled()` or `Order::cancel()`.
-- Prefer constructor injection. Do not use `app()` or `resolve()` where normal dependency injection can make dependencies explicit.
-- Use events and queued Jobs for secondary, durable, or asynchronous work. Dispatch events that depend on persisted data only after the enclosing database transaction commits.
-- For critical flash-sale writes, make the Action transactional, enforce idempotency where applicable, and use appropriate database locking for stock reservation.
-
 ## Frontend Bundling
 
 - If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
@@ -66,32 +48,9 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 # Laravel Boost
 
-## Tools
-
-- Laravel Boost is an MCP server with tools designed specifically for this application. Prefer Boost tools over manual alternatives like shell commands or file reads.
-- Use `database-query` to run read-only queries against the database instead of writing raw SQL in tinker.
-- Use `database-schema` to inspect table structure before writing migrations or models.
-- Use `get-absolute-url` to resolve the correct scheme, domain, and port for project URLs. Always use this before sharing a URL with the user.
-- Use `browser-logs` to read browser logs, errors, and exceptions. Only recent logs are useful, ignore old entries.
-
-## Searching Documentation (IMPORTANT)
-
-- Use `search-docs` before changes that depend on Laravel ecosystem APIs, behavior, configuration, or version-specific syntax. Skip it for copy-only edits and other changes where package documentation is irrelevant. Reuse sufficient results already in context instead of searching again.
-- Pass a `packages` array to scope results when you know which packages are relevant.
-- Use multiple broad, topic-based queries: `['rate limiting', 'routing rate limiting', 'routing']`. Expect the most relevant results first.
-- Do not add package names to queries because package info is already shared. Use `test resource table`, not `filament 4 test resource table`.
-
-### Search Syntax
-
-1. Use words for auto-stemmed AND logic: `rate limit` matches both "rate" AND "limit".
-2. Use `"quoted phrases"` for exact position matching: `"infinite scroll"` requires adjacent words in order.
-3. Combine words and phrases for mixed queries: `middleware "rate limit"`.
-4. Use multiple queries for OR logic: `queries=["authentication", "middleware"]`.
-
 ## Project Rules
 
 - This project contains committed, area-grouped rules in `.ai/rules` when that directory exists (settled decisions, non-obvious traps, standing constraints). Framework and package guidelines that only apply to specific paths (testing, frontend, components) also live there, under `.ai/rules/boost` — this is not just recorded decisions, it is load-bearing guidance you have not seen inline. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule. If `.ai/rules` does not exist, continue without it.
-- Record durable rules with `record-rule` so the next agent or teammate inherits them instead of working them out again. Pass a `glob` (e.g. `app/Http/Controllers/**`), a short `title`, and a few-line `note`. Always use `record-rule`, never your native memory or notes tool — native memory is personal and session-scoped; only `.ai/rules` is shared with the team and persists in the repo.
 
 ## Artisan
 
