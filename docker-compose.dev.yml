@@ -11,6 +11,9 @@ services:
       target: app-dev
     environment:
       XDEBUG_MODE: debug
+      LOG_CHANNEL: stderr
+      LOG_DEPRECATIONS_CHANNEL: stderr
+      LOG_LEVEL: debug
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -19,6 +22,18 @@ services:
       - laravel-storage-dev:/var/www/storage
 
   postgres:
+    command:
+      - postgres
+      - -c
+      - log_destination=stderr
+      - -c
+      - logging_collector=off
+      - -c
+      - log_min_duration_statement=500
+      - -c
+      - log_statement=none
+      - -c
+      - 'log_line_prefix=%m [%p] user=%u,db=%d,app=%a,client=%h '
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
 
@@ -35,6 +50,44 @@ services:
       sh -c 'if [ ! -d node_modules/.bin ]; then npm ci --no-audit --no-fund; fi;
       npm run dev -- --host 0.0.0.0'
 
+  loki:
+    image: grafana/loki:3.7.0
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./docker/observability/loki.yml:/etc/loki/config.yml:ro
+      - loki-data:/loki
+
+  alloy:
+    image: grafana/alloy:v1.19.2
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+    depends_on:
+      - loki
+    volumes:
+      - ./docker/observability/alloy.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - alloy-data:/var/lib/alloy/data
+
+  grafana:
+    image: grafana/grafana:12.4.0
+    depends_on:
+      - loki
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-grafana-dev}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3000}:3000"
+    volumes:
+      - ./docker/observability/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - grafana-data:/var/lib/grafana
+
 volumes:
   laravel-storage-dev:
   node-modules:
+  loki-data:
+  alloy-data:
+  grafana-data:
