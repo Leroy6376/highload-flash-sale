@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Catalog\Models;
 
 use App\Domain\Catalog\Enums\EventStatus;
-use App\Models\Concerns\HasImages;
+use App\Domain\Shared\Images\Concerns\HasImages;
 use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

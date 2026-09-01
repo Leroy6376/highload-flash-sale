@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domain\Catalog\Models\Event;
-use App\Enums\ImageCollection;
-use App\Models\Image;
+use App\Domain\Shared\Images\Enums\ImageCollection;
+use App\Domain\Shared\Images\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

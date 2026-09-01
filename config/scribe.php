@@ -20,10 +20,12 @@ return [
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
     'intro_text' => <<<'INTRO'
-            Здесь собраны доступные HTTP-эндпоинты, их параметры и примеры запросов.
+Здесь собраны доступные HTTP-эндпоинты, их параметры и примеры запросов.
 
-            <aside>Примеры доступны для cURL и JavaScript. При необходимости запрос можно выполнить прямо из документации через <em>Try It Out</em>.</aside>
-        INTRO,
+Ошибочные ответы соответствуют RFC 9457 Problem Details и возвращаются с Content-Type <code>application/problem+json</code>. Каждый ответ содержит поля <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code> и <code>request_id</code>. Ошибки валидации дополнительно содержат массив <code>errors</code> с JSON Pointer в поле <code>pointer</code>.
+
+<aside>Примеры доступны для cURL и JavaScript. При необходимости запрос можно выполнить прямо из документации через <em>Try It Out</em>.</aside>
+INTRO,
 
     // The base URL displayed in the docs.
     // If you're using `laravel` type, you can set this to a dynamic string, like '{{ config("app.tenant_url") }}' to get a dynamic base URL.

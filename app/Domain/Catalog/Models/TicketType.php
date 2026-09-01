@@ -6,7 +6,7 @@ namespace App\Domain\Catalog\Models;
 
 use App\Domain\Catalog\Enums\Currency;
 use App\Domain\Catalog\Enums\TicketTypeStatus;
-use App\Models\Concerns\HasImages;
+use App\Domain\Shared\Images\Concerns\HasImages;
 use Database\Factories\TicketTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

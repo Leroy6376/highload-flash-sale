@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Concerns;
+namespace App\Domain\Shared\Images\Concerns;
 
-use App\Enums\ImageCollection;
-use App\Models\Image;
+use App\Domain\Shared\Images\Enums\ImageCollection;
+use App\Domain\Shared\Images\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;

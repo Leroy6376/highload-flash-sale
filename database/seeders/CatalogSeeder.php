@@ -9,7 +9,7 @@ use App\Domain\Catalog\Enums\EventStatus;
 use App\Domain\Catalog\Enums\TicketTypeStatus;
 use App\Domain\Catalog\Models\Event;
 use App\Domain\Catalog\Models\TicketType;
-use App\Enums\ImageCollection;
+use App\Domain\Shared\Images\Enums\ImageCollection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 

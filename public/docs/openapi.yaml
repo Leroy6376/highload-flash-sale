@@ -6,5 +6,390 @@ info:
 servers:
   -
     url: 'http://localhost:8080'
-tags: []
-paths: []
+tags:
+  -
+    name: Endpoints
+    description: ''
+paths:
+  /api/v1/auth/login:
+    post:
+      summary: ''
+      operationId: postApiV1AuthLogin
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: 'Authentication failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - Unauthorized
+                  status:
+                    type: integer
+                    examples:
+                      - 401
+                  detail:
+                    type: string
+                    examples:
+                      - 'Authentication failed.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/me
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: Unauthorized
+                    status: 401
+                    detail: 'Authentication failed.'
+                    instance: /api/v1/auth/me
+                    request_id: 01JEXAMPLE0000000000000000
+        422:
+          description: 'Validation failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - 'Unprocessable Content'
+                  status:
+                    type: integer
+                    examples:
+                      - 422
+                  detail:
+                    type: string
+                    examples:
+                      - 'The request contains invalid fields.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/login
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        detail:
+                          type: string
+                          examples:
+                            - 'The email field is required.'
+                        pointer:
+                          type: string
+                          examples:
+                            - '#/email'
+                    examples:
+                      -
+                        -
+                          detail: 'The email field is required.'
+                          pointer: '#/email'
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: 'Unprocessable Content'
+                    status: 422
+                    detail: 'The request contains invalid fields.'
+                    instance: /api/v1/auth/login
+                    request_id: 01JEXAMPLE0000000000000000
+                    errors:
+                      -
+                        detail: 'The email field is required.'
+                        pointer: '#/email'
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  examples:
+                    - gbailey@example.net
+                password:
+                  type: string
+                  description: ''
+                  examples:
+                    - '|]|{+-'
+                device_name:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - v
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/auth/me:
+    get:
+      summary: ''
+      operationId: getApiV1AuthMe
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: 'Authentication failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - Unauthorized
+                  status:
+                    type: integer
+                    examples:
+                      - 401
+                  detail:
+                    type: string
+                    examples:
+                      - 'Authentication failed.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/me
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: Unauthorized
+                    status: 401
+                    detail: 'Authentication failed.'
+                    instance: /api/v1/auth/me
+                    request_id: 01JEXAMPLE0000000000000000
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/auth/logout:
+    delete:
+      summary: ''
+      operationId: deleteApiV1AuthLogout
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: 'Authentication failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - Unauthorized
+                  status:
+                    type: integer
+                    examples:
+                      - 401
+                  detail:
+                    type: string
+                    examples:
+                      - 'Authentication failed.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/me
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: Unauthorized
+                    status: 401
+                    detail: 'Authentication failed.'
+                    instance: /api/v1/auth/me
+                    request_id: 01JEXAMPLE0000000000000000
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/auth/tokens:
+    get:
+      summary: ''
+      operationId: getApiV1AuthTokens
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: 'Authentication failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - Unauthorized
+                  status:
+                    type: integer
+                    examples:
+                      - 401
+                  detail:
+                    type: string
+                    examples:
+                      - 'Authentication failed.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/me
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: Unauthorized
+                    status: 401
+                    detail: 'Authentication failed.'
+                    instance: /api/v1/auth/me
+                    request_id: 01JEXAMPLE0000000000000000
+      tags:
+        - Endpoints
+      security: []
+  '/api/v1/auth/tokens/{token}':
+    delete:
+      summary: ''
+      operationId: deleteApiV1AuthTokensToken
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: 'Authentication failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - Unauthorized
+                  status:
+                    type: integer
+                    examples:
+                      - 401
+                  detail:
+                    type: string
+                    examples:
+                      - 'Authentication failed.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/me
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: Unauthorized
+                    status: 401
+                    detail: 'Authentication failed.'
+                    instance: /api/v1/auth/me
+                    request_id: 01JEXAMPLE0000000000000000
+        404:
+          description: 'Token not found.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - 'Not Found'
+                  status:
+                    type: integer
+                    examples:
+                      - 404
+                  detail:
+                    type: string
+                    examples:
+                      - 'The requested resource was not found.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/tokens/1
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: 'Not Found'
+                    status: 404
+                    detail: 'The requested resource was not found.'
+                    instance: /api/v1/auth/tokens/1
+                    request_id: 01JEXAMPLE0000000000000000
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: token
+        description: 'The token.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
