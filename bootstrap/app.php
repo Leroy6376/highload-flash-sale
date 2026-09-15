@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\AddRequestLogContext;
+use App\Http\Middleware\AuthorizeNestedParent;
 use App\Http\Responses\ProblemDetailsResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
@@ -24,6 +25,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'authorize-nested-parent' => AuthorizeNestedParent::class,
+        ]);
         $middleware->appendToGroup('api', AddRequestLogContext::class);
         $middleware->appendToGroup('web', AddRequestLogContext::class);
     })

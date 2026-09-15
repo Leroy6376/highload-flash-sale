@@ -8,8 +8,20 @@ servers:
     url: 'http://localhost:8080'
 tags:
   -
-    name: Endpoints
+    name: Authentication
     description: ''
+  -
+    name: Catalog
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
 paths:
   /api/v1/auth/login:
     post:
@@ -119,7 +131,7 @@ paths:
                         detail: 'The email field is required.'
                         pointer: '#/email'
       tags:
-        - Endpoints
+        - Authentication
       requestBody:
         required: true
         content:
@@ -147,55 +159,6 @@ paths:
               required:
                 - email
                 - password
-      security: []
-  /api/v1/auth/me:
-    get:
-      summary: ''
-      operationId: getApiV1AuthMe
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: 'Authentication failed.'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  type:
-                    type: string
-                    examples:
-                      - 'about:blank'
-                  title:
-                    type: string
-                    examples:
-                      - Unauthorized
-                  status:
-                    type: integer
-                    examples:
-                      - 401
-                  detail:
-                    type: string
-                    examples:
-                      - 'Authentication failed.'
-                  instance:
-                    type: string
-                    examples:
-                      - /api/v1/auth/me
-                  request_id:
-                    type: string
-                    examples:
-                      - 01JEXAMPLE0000000000000000
-                examples:
-                  -
-                    type: 'about:blank'
-                    title: Unauthorized
-                    status: 401
-                    detail: 'Authentication failed.'
-                    instance: /api/v1/auth/me
-                    request_id: 01JEXAMPLE0000000000000000
-      tags:
-        - Endpoints
       security: []
   /api/v1/auth/logout:
     delete:
@@ -244,8 +207,55 @@ paths:
                     instance: /api/v1/auth/me
                     request_id: 01JEXAMPLE0000000000000000
       tags:
-        - Endpoints
-      security: []
+        - Authentication
+  /api/v1/auth/me:
+    get:
+      summary: ''
+      operationId: getApiV1AuthMe
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: 'Authentication failed.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - Unauthorized
+                  status:
+                    type: integer
+                    examples:
+                      - 401
+                  detail:
+                    type: string
+                    examples:
+                      - 'Authentication failed.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/auth/me
+                  request_id:
+                    type: string
+                    examples:
+                      - 01JEXAMPLE0000000000000000
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: Unauthorized
+                    status: 401
+                    detail: 'Authentication failed.'
+                    instance: /api/v1/auth/me
+                    request_id: 01JEXAMPLE0000000000000000
+      tags:
+        - Authentication
   /api/v1/auth/tokens:
     get:
       summary: ''
@@ -293,8 +303,7 @@ paths:
                     instance: /api/v1/auth/me
                     request_id: 01JEXAMPLE0000000000000000
       tags:
-        - Endpoints
-      security: []
+        - Authentication
   '/api/v1/auth/tokens/{token}':
     delete:
       summary: ''
@@ -381,13 +390,1023 @@ paths:
                     instance: /api/v1/auth/tokens/1
                     request_id: 01JEXAMPLE0000000000000000
       tags:
-        - Endpoints
-      security: []
+        - Authentication
     parameters:
       -
         in: path
         name: token
         description: 'The token.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  /api/v1/catalog/events:
+    get:
+      summary: ''
+      operationId: getApiV1CatalogEvents
+      description: ''
+      parameters:
+        -
+          in: query
+          name: page
+          description: 'Номер страницы. Must be at least 1.'
+          required: false
+          schema:
+            type: integer
+            description: 'Номер страницы. Must be at least 1.'
+            examples:
+              - 1
+        -
+          in: query
+          name: per_page
+          description: 'Количество записей на странице (от 1 до 100). Must be at least 1. Must not be greater than 100.'
+          required: false
+          schema:
+            type: integer
+            description: 'Количество записей на странице (от 1 до 100). Must be at least 1. Must not be greater than 100.'
+            examples:
+              - 15
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    examples:
+                      - []
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        examples:
+                          - 'http://localhost:8080/api/v1/catalog/events?per_page=15&page=1'
+                      last:
+                        type: string
+                        examples:
+                          - 'http://localhost:8080/api/v1/catalog/events?per_page=15&page=1'
+                      prev:
+                        type:
+                          - string
+                          - 'null'
+                        examples:
+                          - null
+                      next:
+                        type:
+                          - string
+                          - 'null'
+                        examples:
+                          - null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        examples:
+                          - 1
+                      from:
+                        type:
+                          - string
+                          - 'null'
+                        examples:
+                          - null
+                      last_page:
+                        type: integer
+                        examples:
+                          - 1
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type:
+                                - string
+                                - 'null'
+                              examples:
+                                - null
+                            label:
+                              type: string
+                              examples:
+                                - '&laquo; Previous'
+                            page:
+                              type:
+                                - string
+                                - 'null'
+                              examples:
+                                - null
+                            active:
+                              type: boolean
+                              examples:
+                                - false
+                        examples:
+                          -
+                            -
+                              url: null
+                              label: '&laquo; Previous'
+                              page: null
+                              active: false
+                            -
+                              url: 'http://localhost:8080/api/v1/catalog/events?per_page=15&page=1'
+                              label: '1'
+                              page: 1
+                              active: true
+                            -
+                              url: null
+                              label: 'Next &raquo;'
+                              page: null
+                              active: false
+                      path:
+                        type: string
+                        examples:
+                          - 'http://localhost:8080/api/v1/catalog/events'
+                      per_page:
+                        type: integer
+                        examples:
+                          - 15
+                      to:
+                        type:
+                          - string
+                          - 'null'
+                        examples:
+                          - null
+                      total:
+                        type: integer
+                        examples:
+                          - 0
+                examples:
+                  -
+                    data: []
+                    links:
+                      first: 'http://localhost:8080/api/v1/catalog/events?per_page=15&page=1'
+                      last: 'http://localhost:8080/api/v1/catalog/events?per_page=15&page=1'
+                      prev: null
+                      next: null
+                    meta:
+                      current_page: 1
+                      from: null
+                      last_page: 1
+                      links:
+                        -
+                          url: null
+                          label: '&laquo; Previous'
+                          page: null
+                          active: false
+                        -
+                          url: 'http://localhost:8080/api/v1/catalog/events?per_page=15&page=1'
+                          label: '1'
+                          page: 1
+                          active: true
+                        -
+                          url: null
+                          label: 'Next &raquo;'
+                          page: null
+                          active: false
+                      path: 'http://localhost:8080/api/v1/catalog/events'
+                      per_page: 15
+                      to: null
+                      total: 0
+      tags:
+        - Catalog
+      security: []
+    post:
+      summary: ''
+      operationId: postApiV1CatalogEvents
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - 'n'
+                short_description:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - g
+                description:
+                  type:
+                    - string
+                    - 'null'
+                  description: ''
+                  examples:
+                    - 'Eius et animi quos velit et.'
+                timezone:
+                  type: string
+                  description: 'Must be a valid time zone, such as <code>Africa/Accra</code>.'
+                  examples:
+                    - America/Caracas
+                starts_at:
+                  type: string
+                  description: 'Must be a valid date.'
+                  examples:
+                    - '2026-09-14T13:22:52'
+                ends_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date. Must be a date after <code>starts_at</code>.'
+                  examples:
+                    - '2052-10-07'
+                sales_starts_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date.'
+                  examples:
+                    - '2026-09-14T13:22:52'
+                sales_ends_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date. Must be a date after <code>sales_starts_at</code>.'
+                  examples:
+                    - '2052-10-07'
+                status:
+                  type: string
+                  description: ''
+                  enum:
+                    - draft
+                    - published
+                    - cancelled
+                    - completed
+                  examples:
+                    - draft
+              required:
+                - slug
+                - title
+                - timezone
+                - starts_at
+                - status
+  '/api/v1/catalog/events/{slug}':
+    get:
+      summary: ''
+      operationId: getApiV1CatalogEventsSlug
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - 'Not Found'
+                  status:
+                    type: integer
+                    examples:
+                      - 404
+                  detail:
+                    type: string
+                    examples:
+                      - 'The requested resource was not found.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/catalog/events/architecto
+                  request_id:
+                    type: string
+                    examples:
+                      - 01M2G1BDSRZ9VT0B1K5KGW4FC2
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: 'Not Found'
+                    status: 404
+                    detail: 'The requested resource was not found.'
+                    instance: /api/v1/catalog/events/architecto
+                    request_id: 01M2G1BDSRZ9VT0B1K5KGW4FC2
+      tags:
+        - Catalog
+      security: []
+    put:
+      summary: ''
+      operationId: putApiV1CatalogEventsSlug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - 'n'
+                short_description:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - g
+                description:
+                  type:
+                    - string
+                    - 'null'
+                  description: ''
+                  examples:
+                    - 'Eius et animi quos velit et.'
+                timezone:
+                  type: string
+                  description: 'Must be a valid time zone, such as <code>Africa/Accra</code>.'
+                  examples:
+                    - America/Caracas
+                starts_at:
+                  type: string
+                  description: 'Must be a valid date.'
+                  examples:
+                    - '2026-09-14T13:22:52'
+                ends_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date. Must be a date after <code>starts_at</code>.'
+                  examples:
+                    - '2052-10-07'
+                sales_starts_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date.'
+                  examples:
+                    - '2026-09-14T13:22:52'
+                sales_ends_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date. Must be a date after <code>sales_starts_at</code>.'
+                  examples:
+                    - '2052-10-07'
+                status:
+                  type: string
+                  description: ''
+                  enum:
+                    - draft
+                    - published
+                    - cancelled
+                    - completed
+                  examples:
+                    - cancelled
+              required:
+                - slug
+                - title
+                - timezone
+                - starts_at
+                - status
+    delete:
+      summary: ''
+      operationId: deleteApiV1CatalogEventsSlug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+    parameters:
+      -
+        in: path
+        name: slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  '/api/v1/catalog/events/{event_slug}/ticket-types':
+    get:
+      summary: ''
+      operationId: getApiV1CatalogEventsEvent_slugTicketTypes
+      description: ''
+      parameters:
+        -
+          in: query
+          name: page
+          description: 'Номер страницы. Must be at least 1.'
+          required: false
+          schema:
+            type: integer
+            description: 'Номер страницы. Must be at least 1.'
+            examples:
+              - 1
+        -
+          in: query
+          name: per_page
+          description: 'Количество записей на странице (от 1 до 100). Must be at least 1. Must not be greater than 100.'
+          required: false
+          schema:
+            type: integer
+            description: 'Количество записей на странице (от 1 до 100). Must be at least 1. Must not be greater than 100.'
+            examples:
+              - 15
+      responses:
+        404:
+          description: ''
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - 'Not Found'
+                  status:
+                    type: integer
+                    examples:
+                      - 404
+                  detail:
+                    type: string
+                    examples:
+                      - 'The requested resource was not found.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/catalog/events/architecto/ticket-types
+                  request_id:
+                    type: string
+                    examples:
+                      - 01M2G1BDSRZ9VT0B1K5KGW4FC2
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: 'Not Found'
+                    status: 404
+                    detail: 'The requested resource was not found.'
+                    instance: /api/v1/catalog/events/architecto/ticket-types
+                    request_id: 01M2G1BDSRZ9VT0B1K5KGW4FC2
+      tags:
+        - Catalog
+      security: []
+    post:
+      summary: ''
+      operationId: postApiV1CatalogEventsEvent_slugTicketTypes
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - 'n'
+                description:
+                  type:
+                    - string
+                    - 'null'
+                  description: ''
+                  examples:
+                    - 'Eius et animi quos velit et.'
+                price_amount:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  examples:
+                    - 60
+                currency:
+                  type: string
+                  description: ''
+                  enum:
+                    - RUB
+                  examples:
+                    - RUB
+                capacity:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  examples:
+                    - 26
+                sales_limit_per_user:
+                  type:
+                    - integer
+                    - 'null'
+                  description: 'Must be at least 1.'
+                  examples:
+                    - 40
+                sales_starts_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date.'
+                  examples:
+                    - '2026-09-14T13:22:52'
+                sales_ends_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date. Must be a date after <code>sales_starts_at</code>.'
+                  examples:
+                    - '2052-10-07'
+                status:
+                  type: string
+                  description: ''
+                  enum:
+                    - draft
+                    - active
+                    - disabled
+                  examples:
+                    - active
+              required:
+                - slug
+                - name
+                - price_amount
+                - currency
+                - capacity
+                - status
+    parameters:
+      -
+        in: path
+        name: event_slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  '/api/v1/catalog/events/{event_slug}/ticket-types/{ticketType_slug}':
+    get:
+      summary: ''
+      operationId: getApiV1CatalogEventsEvent_slugTicketTypesTicketType_slug
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    examples:
+                      - 'about:blank'
+                  title:
+                    type: string
+                    examples:
+                      - 'Not Found'
+                  status:
+                    type: integer
+                    examples:
+                      - 404
+                  detail:
+                    type: string
+                    examples:
+                      - 'The requested resource was not found.'
+                  instance:
+                    type: string
+                    examples:
+                      - /api/v1/catalog/events/architecto/ticket-types/architecto
+                  request_id:
+                    type: string
+                    examples:
+                      - 01M2G1BDSRZ9VT0B1K5KGW4FC2
+                examples:
+                  -
+                    type: 'about:blank'
+                    title: 'Not Found'
+                    status: 404
+                    detail: 'The requested resource was not found.'
+                    instance: /api/v1/catalog/events/architecto/ticket-types/architecto
+                    request_id: 01M2G1BDSRZ9VT0B1K5KGW4FC2
+      tags:
+        - Catalog
+      security: []
+    put:
+      summary: ''
+      operationId: putApiV1CatalogEventsEvent_slugTicketTypesTicketType_slug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - 'n'
+                description:
+                  type:
+                    - string
+                    - 'null'
+                  description: ''
+                  examples:
+                    - 'Eius et animi quos velit et.'
+                price_amount:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  examples:
+                    - 60
+                currency:
+                  type: string
+                  description: ''
+                  enum:
+                    - RUB
+                  examples:
+                    - RUB
+                capacity:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  examples:
+                    - 26
+                sales_limit_per_user:
+                  type:
+                    - integer
+                    - 'null'
+                  description: 'Must be at least 1.'
+                  examples:
+                    - 40
+                sales_starts_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date.'
+                  examples:
+                    - '2026-09-14T13:22:52'
+                sales_ends_at:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must be a valid date. Must be a date after <code>sales_starts_at</code>.'
+                  examples:
+                    - '2052-10-07'
+                status:
+                  type: string
+                  description: ''
+                  enum:
+                    - draft
+                    - active
+                    - disabled
+                  examples:
+                    - draft
+              required:
+                - slug
+                - name
+                - price_amount
+                - currency
+                - capacity
+                - status
+    delete:
+      summary: ''
+      operationId: deleteApiV1CatalogEventsEvent_slugTicketTypesTicketType_slug
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+    parameters:
+      -
+        in: path
+        name: event_slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+      -
+        in: path
+        name: ticketType_slug
+        description: 'The slug of the ticketType.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  '/api/v1/catalog/events/{event_slug}/images':
+    post:
+      summary: ''
+      operationId: postApiV1CatalogEventsEvent_slugImages
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 10240 kilobytes.'
+                collection:
+                  type: string
+                  description: ''
+                  enum:
+                    - announcement
+                    - gallery
+                  examples:
+                    - announcement
+                alt_text:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                sort_order:
+                  type:
+                    - integer
+                    - 'null'
+                  description: 'Must be at least 0.'
+                  examples:
+                    - 39
+              required:
+                - file
+                - collection
+      security: []
+    parameters:
+      -
+        in: path
+        name: event_slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  '/api/v1/catalog/events/{event_slug}/images/{image_id}':
+    patch:
+      summary: ''
+      operationId: patchApiV1CatalogEventsEvent_slugImagesImage_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 10240 kilobytes.'
+                collection:
+                  type: string
+                  description: ''
+                  enum:
+                    - announcement
+                    - gallery
+                  examples:
+                    - gallery
+                alt_text:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                sort_order:
+                  type:
+                    - integer
+                    - 'null'
+                  description: 'Must be at least 0.'
+                  examples:
+                    - 39
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiV1CatalogEventsEvent_slugImagesImage_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      security: []
+    parameters:
+      -
+        in: path
+        name: event_slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+      -
+        in: path
+        name: image_id
+        description: 'The ID of the image.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  '/api/v1/catalog/events/{event_slug}/ticket-types/{ticketType_slug}/images':
+    post:
+      summary: ''
+      operationId: postApiV1CatalogEventsEvent_slugTicketTypesTicketType_slugImages
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 10240 kilobytes.'
+                collection:
+                  type: string
+                  description: ''
+                  enum:
+                    - announcement
+                    - gallery
+                  examples:
+                    - announcement
+                alt_text:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                sort_order:
+                  type:
+                    - integer
+                    - 'null'
+                  description: 'Must be at least 0.'
+                  examples:
+                    - 39
+              required:
+                - file
+                - collection
+      security: []
+    parameters:
+      -
+        in: path
+        name: event_slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+      -
+        in: path
+        name: ticketType_slug
+        description: 'The slug of the ticketType.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+  '/api/v1/catalog/events/{event_slug}/ticket-types/{ticketType_slug}/images/{image_id}':
+    patch:
+      summary: ''
+      operationId: patchApiV1CatalogEventsEvent_slugTicketTypesTicketType_slugImagesImage_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 10240 kilobytes.'
+                collection:
+                  type: string
+                  description: ''
+                  enum:
+                    - announcement
+                    - gallery
+                  examples:
+                    - gallery
+                alt_text:
+                  type:
+                    - string
+                    - 'null'
+                  description: 'Must not be greater than 255 characters.'
+                  examples:
+                    - b
+                sort_order:
+                  type:
+                    - integer
+                    - 'null'
+                  description: 'Must be at least 0.'
+                  examples:
+                    - 39
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiV1CatalogEventsEvent_slugTicketTypesTicketType_slugImagesImage_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Catalog
+      security: []
+    parameters:
+      -
+        in: path
+        name: event_slug
+        description: 'The slug of the event.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+      -
+        in: path
+        name: ticketType_slug
+        description: 'The slug of the ticketType.'
+        required: true
+        schema:
+          type: string
+          examples:
+            - architecto
+      -
+        in: path
+        name: image_id
+        description: 'The ID of the image.'
         required: true
         schema:
           type: string

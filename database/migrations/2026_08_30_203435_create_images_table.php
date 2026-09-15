@@ -23,7 +23,12 @@ return new class() extends Migration
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
 
-            $table->index(['imageable_type', 'imageable_id', 'collection', 'sort_order']);
+            $table->index([
+                'imageable_type',
+                'imageable_id',
+                'collection',
+                'sort_order',
+            ]);
         });
 
         DB::statement("CREATE UNIQUE INDEX images_one_announcement_per_imageable ON images (imageable_type, imageable_id) WHERE collection = 'announcement'");

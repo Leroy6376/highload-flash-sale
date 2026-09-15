@@ -12,8 +12,10 @@ parameters:
         - bootstrap
         - config
         - database
+        - phpstan/Rules
         - routes
         - tests
+
 
     excludePaths:
         - database/migrations/2026_09_01_101849_create_permission_tables.php
@@ -43,3 +45,18 @@ parameters:
     noUnnecessaryCollectionCall: true
     noUnnecessaryEnumerableToArrayCalls: true
     parseModelCastsMethod: true
+
+    ignoreErrors:
+        -
+            identifier: staticMethod.dynamicCall
+            message: '#::(published|active|chronological)\(\)#'
+
+services:
+    -
+        class: App\PHPStan\Rules\ComplexSingleLineArrayRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: App\PHPStan\Rules\SingleLineArrayShapePhpDocRule
+        tags:
+            - phpstan.rules.rule

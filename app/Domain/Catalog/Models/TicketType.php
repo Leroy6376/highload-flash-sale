@@ -7,8 +7,11 @@ namespace App\Domain\Catalog\Models;
 use App\Domain\Catalog\Enums\Currency;
 use App\Domain\Catalog\Enums\TicketTypeStatus;
 use App\Domain\Shared\Images\Concerns\HasImages;
+use Carbon\CarbonImmutable;
 use Database\Factories\TicketTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +29,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'sales_ends_at',
     'status',
 ])]
+/**
+ * @property string $id
+ * @property string $event_id
+ * @property string $slug
+ * @property string $name
+ * @property string|null $description
+ * @property int $price_amount
+ * @property Currency $currency
+ * @property int $capacity
+ * @property int|null $sales_limit_per_user
+ * @property CarbonImmutable|null $sales_starts_at
+ * @property CarbonImmutable|null $sales_ends_at
+ * @property TicketTypeStatus $status
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable $updated_at
+ *
+ * @method static Builder<TicketType> active()
+ */
 class TicketType extends Model
 {
     /** @use HasFactory<TicketTypeFactory> */
@@ -35,6 +56,13 @@ class TicketType extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    /** @param Builder<TicketType> $query */
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->where('status', TicketTypeStatus::Active);
     }
 
     protected function casts(): array

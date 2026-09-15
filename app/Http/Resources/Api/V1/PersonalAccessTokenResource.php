@@ -8,18 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Sanctum\PersonalAccessToken;
 
-/** @mixin PersonalAccessToken */
 class PersonalAccessTokenResource extends JsonResource
 {
     /** @return array<string, int|string|null> */
     public function toArray(Request $request): array
     {
+        /** @var PersonalAccessToken $token */
+        $token = $this->resource;
+
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'last_used_at' => $this->last_used_at?->toISOString(),
-            'expires_at' => $this->expires_at?->toISOString(),
-            'created_at' => $this->created_at?->toISOString(),
+            'id' => $token->id,
+            'name' => $token->name,
+            'last_used_at' => $token->last_used_at?->toISOString(),
+            'expires_at' => $token->expires_at?->toISOString(),
+            'created_at' => $token->created_at?->toISOString(),
         ];
     }
 }

@@ -26,7 +26,13 @@ class LoginRequest extends FormRequest
 
     public function loginData(): LoginData
     {
-        /** @var array{email: string, password: string, device_name?: string} $validated */
+        /**
+         * @var array{
+         *     email: string,
+         *     password: string,
+         *     device_name?: string,
+         * } $validated
+         */
         $validated = $this->validated();
 
         return new LoginData(

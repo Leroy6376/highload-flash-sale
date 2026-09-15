@@ -81,6 +81,13 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
 
+=== tests rules ===
+
+# Tests
+
+- Do not create or modify tests unless the user explicitly asks for tests.
+- If tests might be useful but were not requested, ask the user whether they want them before adding or changing any test file.
+
 === laravel/core rules ===
 
 # Do Things the Laravel Way
@@ -117,6 +124,13 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - If you have modified any PHP files, you must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
+
+=== verification rules ===
+
+# Final Verification
+
+- After every change, run `make check` before finalizing the work.
+- If `make check` reports any error, fix it and rerun `make check` until all checks pass.
 
 === phpunit/core rules ===
 

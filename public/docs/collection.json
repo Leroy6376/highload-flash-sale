@@ -10,248 +10,1120 @@
     ],
     "info": {
         "name": "Highload Flash Sale API",
-        "_postman_id": "4cfe6738-00e8-4dcd-bcee-e0da2c5ef259",
+        "_postman_id": "3880b321-c758-47e0-a996-e83c11c914e0",
         "description": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f HTTP API \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u044f.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
     "item": [
         {
-            "name": "Endpoints",
+            "name": "Authentication",
             "description": "",
             "item": [
                 {
-                    "name": "POST api\/v1\/auth\/login",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/auth\/login",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/auth\/login"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\":\"gbailey@example.net\",\"password\":\"|]|{+-\",\"device_name\":\"v\"}"
-                        },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": [
+                    "name": "Session",
+                    "description": "",
+                    "item": [
                         {
-                            "header": [],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
-                            "name": "Authentication failed."
-                        },
-                        {
-                            "header": [],
-                            "code": 422,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unprocessable Content\",\"status\":422,\"detail\":\"The request contains invalid fields.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/login\",\"request_id\":\"01JEXAMPLE0000000000000000\",\"errors\":[{\"detail\":\"The email field is required.\",\"pointer\":\"#\\\/email\"}]}",
-                            "name": "Validation failed."
-                        }
-                    ]
-                },
-                {
-                    "name": "GET api\/v1\/auth\/me",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/auth\/me",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/auth\/me"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
-                            "name": "Authentication failed."
-                        },
-                        {
-                            "header": [
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/problem+json"
+                            "name": "POST api\/v1\/auth\/login",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/login",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/login"
                                 },
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\":\"gbailey@example.net\",\"password\":\"|]|{+-\",\"device_name\":\"v\"}"
                                 },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
                                 }
-                            ],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":null}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "DELETE api\/v1\/auth\/logout",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/auth\/logout",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/auth\/logout"
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
                             },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
-                            "name": "Authentication failed."
-                        }
-                    ]
-                },
-                {
-                    "name": "GET api\/v1\/auth\/tokens",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/auth\/tokens",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/auth\/tokens"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
-                            "name": "Authentication failed."
-                        },
-                        {
-                            "header": [
+                            "response": [
                                 {
-                                    "key": "content-type",
-                                    "value": "application\/problem+json"
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
                                 },
                                 {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\",\"request_id\":null}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "DELETE api\/v1\/auth\/tokens\/{token}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/auth\/tokens\/:token",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/auth\/tokens\/:token",
-                            "variable": [
-                                {
-                                    "id": "token",
-                                    "key": "token",
-                                    "value": "architecto",
-                                    "description": "The token."
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unprocessable Content\",\"status\":422,\"detail\":\"The request contains invalid fields.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/login\",\"request_id\":\"01JEXAMPLE0000000000000000\",\"errors\":[{\"detail\":\"The email field is required.\",\"pointer\":\"#\\\/email\"}]}",
+                                    "name": "Validation failed."
                                 }
                             ]
                         },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": [
                         {
-                            "header": [],
-                            "code": 401,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
-                            "name": "Authentication failed."
+                            "name": "DELETE api\/v1\/auth\/logout",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/logout",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/logout"
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Current user",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "GET api\/v1\/auth\/me",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/me",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/me"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/problem+json"
+                                        },
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":null}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Access tokens",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "GET api\/v1\/auth\/tokens",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/tokens",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/tokens"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/problem+json"
+                                        },
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\",\"request_id\":null}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
-                            "header": [],
-                            "code": 404,
-                            "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
-                            "name": "Token not found."
+                            "name": "DELETE api\/v1\/auth\/tokens\/{token}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/tokens\/:token",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/tokens\/:token",
+                                    "variable": [
+                                        {
+                                            "id": "token",
+                                            "key": "token",
+                                            "value": "architecto",
+                                            "description": "The token."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Token not found."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Catalog",
+            "description": "",
+            "item": [
+                {
+                    "name": "Events",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "GET api\/v1\/catalog\/events",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events",
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1",
+                                            "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b. Must be at least 1.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u0430\u043f\u0438\u0441\u0435\u0439 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435 (\u043e\u0442 1 \u0434\u043e 100). Must be at least 1. Must not be greater than 100.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events?page=1&per_page=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "x-request-id",
+                                            "value": "01M2G1BDSRZ9VT0B1K5KGW4FC2"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 200,
+                                    "body": "{\"data\":[],\"links\":{\"first\":\"http:\\\/\\\/localhost:8080\\\/api\\\/v1\\\/catalog\\\/events?per_page=15&page=1\",\"last\":\"http:\\\/\\\/localhost:8080\\\/api\\\/v1\\\/catalog\\\/events?per_page=15&page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":null,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"http:\\\/\\\/localhost:8080\\\/api\\\/v1\\\/catalog\\\/events?per_page=15&page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"http:\\\/\\\/localhost:8080\\\/api\\\/v1\\\/catalog\\\/events\",\"per_page\":15,\"to\":null,\"total\":0}}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "GET api\/v1\/catalog\/events\/{slug}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:slug",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:slug",
+                                    "variable": [
+                                        {
+                                            "id": "slug",
+                                            "key": "slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/problem+json"
+                                        },
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\",\"request_id\":\"01M2G1BDSRZ9VT0B1K5KGW4FC2\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "POST api\/v1\/catalog\/events",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"slug\":\"b\",\"title\":\"n\",\"short_description\":\"g\",\"description\":\"Eius et animi quos velit et.\",\"timezone\":\"America\\\/Caracas\",\"starts_at\":\"2026-09-14T13:22:52\",\"ends_at\":\"2052-10-07\",\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"draft\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "PUT api\/v1\/catalog\/events\/{slug}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:slug",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:slug",
+                                    "variable": [
+                                        {
+                                            "id": "slug",
+                                            "key": "slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"slug\":\"b\",\"title\":\"n\",\"short_description\":\"g\",\"description\":\"Eius et animi quos velit et.\",\"timezone\":\"America\\\/Caracas\",\"starts_at\":\"2026-09-14T13:22:52\",\"ends_at\":\"2052-10-07\",\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"cancelled\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "DELETE api\/v1\/catalog\/events\/{slug}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:slug",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:slug",
+                                    "variable": [
+                                        {
+                                            "id": "slug",
+                                            "key": "slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Ticket types",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "GET api\/v1\/catalog\/events\/{event_slug}\/ticket-types",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types",
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1",
+                                            "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b. Must be at least 1.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u0430\u043f\u0438\u0441\u0435\u0439 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435 (\u043e\u0442 1 \u0434\u043e 100). Must be at least 1. Must not be greater than 100.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types?page=1&per_page=15",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/problem+json"
+                                        },
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\\\/ticket-types\",\"request_id\":\"01M2G1BDSRZ9VT0B1K5KGW4FC2\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "GET api\/v1\/catalog\/events\/{event_slug}\/ticket-types\/{ticketType_slug}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "ticketType_slug",
+                                            "key": "ticketType_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the ticketType."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/problem+json"
+                                        },
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "access-control-allow-origin",
+                                            "value": "*"
+                                        }
+                                    ],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\\\/ticket-types\\\/architecto\",\"request_id\":\"01M2G1BDSRZ9VT0B1K5KGW4FC2\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "POST api\/v1\/catalog\/events\/{event_slug}\/ticket-types",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"slug\":\"b\",\"name\":\"n\",\"description\":\"Eius et animi quos velit et.\",\"price_amount\":60,\"currency\":\"RUB\",\"capacity\":26,\"sales_limit_per_user\":40,\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"active\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "PUT api\/v1\/catalog\/events\/{event_slug}\/ticket-types\/{ticketType_slug}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "ticketType_slug",
+                                            "key": "ticketType_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the ticketType."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"slug\":\"b\",\"name\":\"n\",\"description\":\"Eius et animi quos velit et.\",\"price_amount\":60,\"currency\":\"RUB\",\"capacity\":26,\"sales_limit_per_user\":40,\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"draft\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "DELETE api\/v1\/catalog\/events\/{event_slug}\/ticket-types\/{ticketType_slug}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "ticketType_slug",
+                                            "key": "ticketType_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the ticketType."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Images",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "POST api\/v1\/catalog\/events\/{event_slug}\/images",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/images",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/images",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "collection",
+                                            "value": "announcement",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "alt_text",
+                                            "value": "b",
+                                            "type": "text",
+                                            "description": "Must not be greater than 255 characters."
+                                        },
+                                        {
+                                            "key": "sort_order",
+                                            "value": "39",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "file",
+                                            "src": [],
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "PATCH api\/v1\/catalog\/events\/{event_slug}\/images\/{image_id}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/images\/:image_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/images\/:image_id",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "image_id",
+                                            "key": "image_id",
+                                            "value": "architecto",
+                                            "description": "The ID of the image."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "collection",
+                                            "value": "gallery",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "alt_text",
+                                            "value": "b",
+                                            "type": "text",
+                                            "description": "Must not be greater than 255 characters."
+                                        },
+                                        {
+                                            "key": "sort_order",
+                                            "value": "39",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "file",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "_method",
+                                            "value": "PATCH",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "DELETE api\/v1\/catalog\/events\/{event_slug}\/images\/{image_id}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/images\/:image_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/images\/:image_id",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "image_id",
+                                            "key": "image_id",
+                                            "value": "architecto",
+                                            "description": "The ID of the image."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "POST api\/v1\/catalog\/events\/{event_slug}\/ticket-types\/{ticketType_slug}\/images",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug\/images",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug\/images",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "ticketType_slug",
+                                            "key": "ticketType_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the ticketType."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "collection",
+                                            "value": "announcement",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "alt_text",
+                                            "value": "b",
+                                            "type": "text",
+                                            "description": "Must not be greater than 255 characters."
+                                        },
+                                        {
+                                            "key": "sort_order",
+                                            "value": "39",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "file",
+                                            "src": [],
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "PATCH api\/v1\/catalog\/events\/{event_slug}\/ticket-types\/{ticketType_slug}\/images\/{image_id}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug\/images\/:image_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug\/images\/:image_id",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "ticketType_slug",
+                                            "key": "ticketType_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the ticketType."
+                                        },
+                                        {
+                                            "id": "image_id",
+                                            "key": "image_id",
+                                            "value": "architecto",
+                                            "description": "The ID of the image."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "multipart\/form-data"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "collection",
+                                            "value": "gallery",
+                                            "type": "text",
+                                            "description": ""
+                                        },
+                                        {
+                                            "key": "alt_text",
+                                            "value": "b",
+                                            "type": "text",
+                                            "description": "Must not be greater than 255 characters."
+                                        },
+                                        {
+                                            "key": "sort_order",
+                                            "value": "39",
+                                            "type": "text",
+                                            "description": "Must be at least 0."
+                                        },
+                                        {
+                                            "key": "file",
+                                            "src": [],
+                                            "type": "file"
+                                        },
+                                        {
+                                            "key": "_method",
+                                            "value": "PATCH",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "DELETE api\/v1\/catalog\/events\/{event_slug}\/ticket-types\/{ticketType_slug}\/images\/{image_id}",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug\/images\/:image_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/catalog\/events\/:event_slug\/ticket-types\/:ticketType_slug\/images\/:image_id",
+                                    "variable": [
+                                        {
+                                            "id": "event_slug",
+                                            "key": "event_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the event."
+                                        },
+                                        {
+                                            "id": "ticketType_slug",
+                                            "key": "ticketType_slug",
+                                            "value": "architecto",
+                                            "description": "The slug of the ticketType."
+                                        },
+                                        {
+                                            "id": "image_id",
+                                            "key": "image_id",
+                                            "value": "architecto",
+                                            "description": "The ID of the image."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
                         }
                     ]
                 }
@@ -259,6 +1131,12 @@
         }
     ],
     "auth": {
-        "type": "noauth"
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "key",
+                "type": "string"
+            }
+        ]
     }
 }

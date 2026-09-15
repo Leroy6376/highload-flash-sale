@@ -16,8 +16,13 @@ use App\Http\Resources\Api\V1\PersonalAccessTokenResource;
 use App\Http\Resources\Api\V1\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Knuckles\Scribe\Attributes\Authenticated;
+use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\Response;
+use Knuckles\Scribe\Attributes\Subgroup;
+use Knuckles\Scribe\Attributes\Unauthenticated;
 
+#[Group('Authentication')]
 #[Response(
     content: ProblemDetailsExamples::Unauthorized,
     status: 401,
@@ -30,6 +35,8 @@ class AuthController extends Controller
         status: 422,
         description: 'Validation failed.',
     )]
+    #[Subgroup('Session')]
+    #[Unauthenticated]
     public function login(LoginRequest $request, LoginAction $login): JsonResponse
     {
         $accessToken = $login->handle($request->loginData());
@@ -42,6 +49,8 @@ class AuthController extends Controller
         ]);
     }
 
+    #[Subgroup('Current user')]
+    #[Authenticated]
     public function me(Request $request): JsonResponse
     {
         /** @var User $user */
@@ -50,6 +59,8 @@ class AuthController extends Controller
         return response()->json(['user' => UserResource::make($user)->resolve()]);
     }
 
+    #[Subgroup('Session')]
+    #[Authenticated]
     public function logout(Request $request, LogoutAction $logout): JsonResponse
     {
         /** @var User $user */
@@ -59,6 +70,8 @@ class AuthController extends Controller
         return response()->json(status: 204);
     }
 
+    #[Subgroup('Access tokens')]
+    #[Authenticated]
     public function tokens(Request $request, ListPersonalAccessTokensAction $listTokens): JsonResponse
     {
         /** @var User $user */
@@ -76,6 +89,8 @@ class AuthController extends Controller
         status: 404,
         description: 'Token not found.',
     )]
+    #[Subgroup('Access tokens')]
+    #[Authenticated]
     public function destroyToken(
         Request $request,
         string $token,

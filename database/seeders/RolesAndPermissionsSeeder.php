@@ -12,26 +12,50 @@ use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
+    private const string GuardName = 'web';
+
     public function run(): void
     {
-        app(PermissionRegistrar::class)->forgetCachedPermissions();
+        $permissionRegistrar = app(PermissionRegistrar::class);
+        $permissionRegistrar->forgetCachedPermissions();
 
         $permissions = [
-            'admin.access', 'users.view', 'users.create', 'users.update', 'users.delete',
-            'roles.view', 'roles.create', 'roles.update', 'roles.delete',
-            'catalog.events.view', 'catalog.events.create', 'catalog.events.update', 'catalog.events.delete',
-            'catalog.ticket-types.view', 'catalog.ticket-types.create', 'catalog.ticket-types.update', 'catalog.ticket-types.delete',
+            'admin.access',
+            'users.view',
+            'users.create',
+            'users.update',
+            'users.delete',
+            'roles.view',
+            'roles.create',
+            'roles.update',
+            'roles.delete',
+            'catalog.events.view',
+            'catalog.events.create',
+            'catalog.events.update',
+            'catalog.events.delete',
+            'catalog.ticket-types.view',
+            'catalog.ticket-types.create',
+            'catalog.ticket-types.update',
+            'catalog.ticket-types.delete',
         ];
         foreach ($permissions as $permission) {
-            Permission::findOrCreate($permission);
+            Permission::findOrCreate($permission, self::GuardName);
         }
 
-        Role::findOrCreate(UserRole::SuperAdmin->value)->syncPermissions($permissions);
-        Role::findOrCreate(UserRole::CatalogManager->value)->syncPermissions([
+        $permissionRegistrar->forgetCachedPermissions();
+
+        Role::findOrCreate(UserRole::SuperAdmin->value, self::GuardName)->syncPermissions($permissions);
+        Role::findOrCreate(UserRole::CatalogManager->value, self::GuardName)->syncPermissions([
             'admin.access',
-            'catalog.events.view', 'catalog.events.create', 'catalog.events.update', 'catalog.events.delete',
-            'catalog.ticket-types.view', 'catalog.ticket-types.create', 'catalog.ticket-types.update', 'catalog.ticket-types.delete',
+            'catalog.events.view',
+            'catalog.events.create',
+            'catalog.events.update',
+            'catalog.events.delete',
+            'catalog.ticket-types.view',
+            'catalog.ticket-types.create',
+            'catalog.ticket-types.update',
+            'catalog.ticket-types.delete',
         ]);
-        Role::findOrCreate(UserRole::Customer->value);
+        Role::findOrCreate(UserRole::Customer->value, self::GuardName);
     }
 }

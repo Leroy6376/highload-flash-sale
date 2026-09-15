@@ -6,8 +6,11 @@ namespace App\Domain\Catalog\Models;
 
 use App\Domain\Catalog\Enums\EventStatus;
 use App\Domain\Shared\Images\Concerns\HasImages;
+use Carbon\CarbonImmutable;
 use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +28,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'sales_ends_at',
     'status',
 ])]
+/**
+ * @property string $id
+ * @property string $slug
+ * @property string $title
+ * @property string|null $short_description
+ * @property string|null $description
+ * @property string $timezone
+ * @property CarbonImmutable $starts_at
+ * @property CarbonImmutable|null $ends_at
+ * @property CarbonImmutable|null $sales_starts_at
+ * @property CarbonImmutable|null $sales_ends_at
+ * @property EventStatus $status
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable $updated_at
+ *
+ * @method static Builder<Event> published()
+ * @method static Builder<Event> chronological()
+ */
 class Event extends Model
 {
     /** @use HasFactory<EventFactory> */
@@ -34,6 +55,20 @@ class Event extends Model
     public function ticketTypes(): HasMany
     {
         return $this->hasMany(TicketType::class);
+    }
+
+    /** @param Builder<Event> $query */
+    #[Scope]
+    protected function published(Builder $query): void
+    {
+        $query->where('status', EventStatus::Published);
+    }
+
+    /** @param Builder<Event> $query */
+    #[Scope]
+    protected function chronological(Builder $query): void
+    {
+        $query->getQuery()->orderBy('starts_at');
     }
 
     protected function casts(): array
