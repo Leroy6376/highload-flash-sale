@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Domain\Shared\Images\Data\CreateImageData;
+use App\Domain\Shared\Images\Data\UpdateImageData;
 use App\Domain\Shared\Images\Enums\ImageCollection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
@@ -31,46 +33,46 @@ class ImageRequest extends FormRequest
         ];
     }
 
-    /**
-     * @return array{
-     *     collection?: ImageCollection,
-     *     alt_text?: string|null,
-     *     sort_order?: int,
-     * }
-     */
-    public function imageAttributes(): array
+    public function createImageData(): CreateImageData
     {
+        /**
+         * @var array{
+         *     collection: string,
+         *     alt_text?: string|null,
+         *     sort_order?: int
+         * } $validated
+         */
         $validated = $this->validated();
-        $attributes = [];
 
-        if (isset($validated['collection']) && is_string($validated['collection'])) {
-            $attributes['collection'] = ImageCollection::from($validated['collection']);
-        }
-
-        if (array_key_exists('alt_text', $validated) && (is_string($validated['alt_text']) || $validated['alt_text'] === null)) {
-            $attributes['alt_text'] = $validated['alt_text'];
-        }
-
-        if (isset($validated['sort_order']) && is_numeric($validated['sort_order'])) {
-            $attributes['sort_order'] = (int) $validated['sort_order'];
-        }
-
-        return $attributes;
+        return new CreateImageData(
+            file: $this->uploadedFile(),
+            collection: ImageCollection::from($validated['collection']),
+            altText: $validated['alt_text'] ?? null,
+            sortOrder: $validated['sort_order'] ?? 0,
+        );
     }
 
-    /**
-     * @return array{
-     *     collection: ImageCollection,
-     *     alt_text?: string|null,
-     *     sort_order?: int,
-     * }
-     */
-    public function imageAttributesForCreation(): array
+    public function updateImageData(): UpdateImageData
     {
-        $attributes = $this->imageAttributes();
-        abort_unless(isset($attributes['collection']), 422);
+        /**
+         * @var array{
+         *     collection?: string,
+         *     alt_text?: string|null,
+         *     sort_order?: int
+         * } $validated
+         */
+        $validated = $this->validated();
+        $file = $this->file('file');
 
-        return $attributes;
+        return new UpdateImageData(
+            file: $file instanceof UploadedFile ? $file : null,
+            hasCollection: array_key_exists('collection', $validated),
+            collection: isset($validated['collection']) ? ImageCollection::from($validated['collection']) : null,
+            hasAltText: array_key_exists('alt_text', $validated),
+            altText: $validated['alt_text'] ?? null,
+            hasSortOrder: array_key_exists('sort_order', $validated),
+            sortOrder: $validated['sort_order'] ?? null,
+        );
     }
 
     public function uploadedFile(): UploadedFile

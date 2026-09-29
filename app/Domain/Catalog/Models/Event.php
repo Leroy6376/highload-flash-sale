@@ -86,13 +86,4 @@ class Event extends Model
     {
         return EventFactory::new();
     }
-
-    protected static function booted(): void
-    {
-        static::deleting(function (self $event): void {
-            foreach ($event->ticketTypes()->get() as $ticketType) {
-                $ticketType->delete();
-            }
-        });
-    }
 }

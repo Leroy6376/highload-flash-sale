@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Domain\Identity\Actions\GetCurrentUserAction;
 use App\Domain\Identity\Actions\ListPersonalAccessTokensAction;
 use App\Domain\Identity\Actions\LoginAction;
 use App\Domain\Identity\Actions\LogoutAction;
@@ -51,12 +52,12 @@ class AuthController extends Controller
 
     #[Subgroup('Current user')]
     #[Authenticated]
-    public function me(Request $request): JsonResponse
+    public function me(Request $request, GetCurrentUserAction $getCurrentUser): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
-        return response()->json(['user' => UserResource::make($user)->resolve()]);
+        return response()->json(['user' => UserResource::make($getCurrentUser->handle($user))->resolve()]);
     }
 
     #[Subgroup('Session')]

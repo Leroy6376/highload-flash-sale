@@ -45,11 +45,4 @@ trait HasImages
 
         return $images;
     }
-
-    public static function bootHasImages(): void
-    {
-        static::deleting(function (self $model): void {
-            $model->images()->getBaseQuery()->delete();
-        });
-    }
 }

@@ -10,9 +10,9 @@ use App\Domain\Identity\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Hashing\Hasher;
 
-class LoginAction
+final readonly class LoginAction
 {
-    public function __construct(private readonly Hasher $hasher) {}
+    public function __construct(private Hasher $hasher) {}
 
     public function handle(LoginData $data): IssuedAccessToken
     {

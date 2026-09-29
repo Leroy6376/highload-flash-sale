@@ -7,7 +7,7 @@ namespace App\Domain\Identity\Actions;
 use App\Domain\Identity\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class RevokePersonalAccessTokenAction
+final class RevokePersonalAccessTokenAction
 {
     public function handle(User $user, string $tokenId): void
     {

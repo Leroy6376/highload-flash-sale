@@ -8,7 +8,7 @@ use App\Domain\Identity\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class ListPersonalAccessTokensAction
+final class ListPersonalAccessTokensAction
 {
     /** @return Collection<int, PersonalAccessToken> */
     public function handle(User $user): Collection

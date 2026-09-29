@@ -60,3 +60,7 @@ services:
         class: App\PHPStan\Rules\SingleLineArrayShapePhpDocRule
         tags:
             - phpstan.rules.rule
+    -
+        class: App\PHPStan\Rules\NoDirectPersistenceInAdaptersRule
+        tags:
+            - phpstan.rules.rule

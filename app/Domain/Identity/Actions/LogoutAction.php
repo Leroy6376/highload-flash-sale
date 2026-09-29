@@ -7,7 +7,7 @@ namespace App\Domain\Identity\Actions;
 use App\Domain\Identity\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class LogoutAction
+final class LogoutAction
 {
     public function handle(User $user): void
     {

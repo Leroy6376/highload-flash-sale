@@ -11,39 +11,71 @@ return static function (DeptracConfig $config): void {
     $config
         ->paths('app')
         ->layers(
-            $catalog = Layer::withName('Catalog')->collectors(
-                DirectoryConfig::create('app/Domain/Catalog/(?!Actions|Contracts|Events).*'),
+            $catalogCore = Layer::withName('Catalog Core')->collectors(
+                DirectoryConfig::create('app/Domain/Catalog/(?!Actions|Data).*'),
             ),
-            $identity = Layer::withName('Identity')->collectors(
-                DirectoryConfig::create('app/Domain/Identity/(?!Actions|Contracts|Events).*'),
+            $catalogData = Layer::withName('Catalog Data')->collectors(
+                DirectoryConfig::create('app/Domain/Catalog/Data/.*'),
             ),
-            $orders = Layer::withName('Orders')->collectors(
-                DirectoryConfig::create('app/Domain/Orders/(?!Actions|Contracts|Events).*'),
+            $catalogActions = Layer::withName('Catalog Actions')->collectors(
+                DirectoryConfig::create('app/Domain/Catalog/Actions/.*'),
             ),
-            $promotions = Layer::withName('Promotions')->collectors(
-                DirectoryConfig::create('app/Domain/Promotions/(?!Actions|Contracts|Events).*'),
+            $identityCore = Layer::withName('Identity Core')->collectors(
+                DirectoryConfig::create('app/Domain/Identity/(?!Actions|Data).*'),
             ),
-            $shared = Layer::withName('Shared')->collectors(
-                DirectoryConfig::create('app/Domain/Shared/(?!Actions|Contracts|Events).*'),
+            $identityData = Layer::withName('Identity Data')->collectors(
+                DirectoryConfig::create('app/Domain/Identity/Data/.*'),
             ),
-            $actions = Layer::withName('Actions')->collectors(
-                DirectoryConfig::create('app/Domain/[^/]+/Actions/.*'),
+            $identityActions = Layer::withName('Identity Actions')->collectors(
+                DirectoryConfig::create('app/Domain/Identity/Actions/.*'),
             ),
-            $contracts = Layer::withName('Contracts')->collectors(
-                DirectoryConfig::create('app/Domain/[^/]+/Contracts/.*'),
+            $sharedCore = Layer::withName('Shared Core')->collectors(
+                DirectoryConfig::create('app/Domain/Shared/(?![^/]+/(Actions|Data)/).*'),
             ),
-            $events = Layer::withName('Events')->collectors(
-                DirectoryConfig::create('app/Domain/[^/]+/Events/.*'),
+            $sharedData = Layer::withName('Shared Data')->collectors(
+                DirectoryConfig::create('app/Domain/Shared/[^/]+/Data/.*'),
+            ),
+            $sharedActions = Layer::withName('Shared Actions')->collectors(
+                DirectoryConfig::create('app/Domain/Shared/[^/]+/Actions/.*'),
+            ),
+            $http = Layer::withName('HTTP Adapters')->collectors(
+                DirectoryConfig::create('app/Http/.*'),
+            ),
+            $filament = Layer::withName('Filament Adapters')->collectors(
+                DirectoryConfig::create('app/Filament/.*'),
             ),
         )
         ->rulesets(
-            Ruleset::forLayer($catalog)->accesses($catalog, $shared, $actions, $contracts, $events),
-            Ruleset::forLayer($identity)->accesses($identity, $actions, $contracts, $events),
-            Ruleset::forLayer($orders)->accesses($orders, $actions, $contracts, $events),
-            Ruleset::forLayer($promotions)->accesses($promotions, $actions, $contracts, $events),
-            Ruleset::forLayer($shared)->accesses($shared),
-            Ruleset::forLayer($actions)->accesses($catalog, $identity, $orders, $promotions, $shared, $actions, $contracts, $events),
-            Ruleset::forLayer($contracts)->accesses($catalog, $identity, $orders, $promotions, $shared, $actions, $contracts, $events),
-            Ruleset::forLayer($events)->accesses($catalog, $identity, $orders, $promotions, $shared, $actions, $contracts, $events),
+            Ruleset::forLayer($catalogCore)->accesses($catalogCore, $sharedCore),
+            Ruleset::forLayer($catalogData)->accesses($catalogCore, $catalogData),
+            Ruleset::forLayer($catalogActions)->accesses($catalogCore, $catalogData, $catalogActions, $sharedCore, $sharedActions),
+            Ruleset::forLayer($identityCore)->accesses($identityCore),
+            Ruleset::forLayer($identityData)->accesses($identityCore, $identityData),
+            Ruleset::forLayer($identityActions)->accesses($identityCore, $identityData, $identityActions),
+            Ruleset::forLayer($sharedCore)->accesses($sharedCore),
+            Ruleset::forLayer($sharedData)->accesses($sharedCore, $sharedData),
+            Ruleset::forLayer($sharedActions)->accesses($catalogCore, $sharedCore, $sharedData, $sharedActions),
+            Ruleset::forLayer($http)->accesses(
+                $catalogCore,
+                $catalogData,
+                $catalogActions,
+                $identityCore,
+                $identityData,
+                $identityActions,
+                $sharedCore,
+                $sharedData,
+                $sharedActions,
+            ),
+            Ruleset::forLayer($filament)->accesses(
+                $catalogCore,
+                $catalogData,
+                $catalogActions,
+                $identityCore,
+                $identityData,
+                $identityActions,
+                $sharedCore,
+                $sharedData,
+                $sharedActions,
+            ),
         );
 };

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Identity\Data;
 
-readonly class LoginData
+final readonly class LoginData
 {
     public function __construct(
         public string $email,

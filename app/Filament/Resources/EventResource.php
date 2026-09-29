@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Domain\Catalog\Actions\DeleteEventAction;
+use App\Domain\Catalog\Actions\EventAdminQueryAction;
+use App\Domain\Catalog\Data\EventData;
 use App\Domain\Catalog\Enums\EventStatus;
 use App\Domain\Catalog\Models\Event;
-use App\Domain\Shared\Images\Enums\ImageCollection;
 use App\Filament\Resources\EventResource\Pages;
+use App\Filament\Resources\EventResource\RelationManagers\ImagesRelationManager;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -23,6 +24,10 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 
 class EventResource extends Resource
 {
@@ -45,12 +50,6 @@ class EventResource extends Resource
             DateTimePicker::make('sales_starts_at'),
             DateTimePicker::make('sales_ends_at'),
             Select::make('status')->options(collect(EventStatus::cases())->mapWithKeys(fn (EventStatus $status) => [$status->value => $status->value]))->required(),
-            Repeater::make('images')->relationship()->orderColumn('sort_order')->schema([
-                Select::make('collection')->options(collect(ImageCollection::cases())->mapWithKeys(fn (ImageCollection $collection) => [$collection->value => $collection->value]))->required(),
-                FileUpload::make('path')->disk('public')->directory('catalog/events')->image()->required(),
-                TextInput::make('alt_text'),
-                TextInput::make('sort_order')->numeric()->default(0),
-            ]),
         ]);
     }
 
@@ -68,9 +67,21 @@ class EventResource extends Resource
             SelectFilter::make('status')->options(collect(EventStatus::cases())->mapWithKeys(fn (EventStatus $status) => [$status->value => $status->value])),
         ])->recordActions([
             EditAction::make(),
-            DeleteAction::make(),
+            DeleteAction::make()->using(function (Model $record, DeleteEventAction $deleteEvent): bool {
+                assert($record instanceof Event);
+                $deleteEvent->handle($record);
+
+                return true;
+            }),
         ])->toolbarActions([
-            BulkActionGroup::make([DeleteBulkAction::make()]),
+            BulkActionGroup::make([
+                DeleteBulkAction::make()->using(function (Collection $records, DeleteEventAction $deleteEvent): void {
+                    foreach ($records as $record) {
+                        assert($record instanceof Event);
+                        $deleteEvent->handle($record);
+                    }
+                }),
+            ]),
         ])->paginationPageOptions($paginationPageOptions)
             ->defaultPaginationPageOption(config()->integer('catalog.pagination.default_per_page'));
     }
@@ -82,5 +93,73 @@ class EventResource extends Resource
             'create' => Pages\CreateEvent::route('/create'),
             'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [ImagesRelationManager::class];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        /** @phpstan-ignore return.type (Filament fixes the parent builder generic to Model.) */
+        return resolve(EventAdminQueryAction::class)->handle();
+    }
+
+    /** @param array<string, mixed> $data */
+    public static function eventData(array $data): EventData
+    {
+        return new EventData(
+            slug: self::requiredString($data, 'slug'),
+            title: self::requiredString($data, 'title'),
+            shortDescription: self::nullableString($data, 'short_description'),
+            description: self::nullableString($data, 'description'),
+            timezone: self::requiredString($data, 'timezone'),
+            startsAt: self::requiredString($data, 'starts_at'),
+            endsAt: self::nullableString($data, 'ends_at'),
+            salesStartsAt: self::nullableString($data, 'sales_starts_at'),
+            salesEndsAt: self::nullableString($data, 'sales_ends_at'),
+            status: self::eventStatus($data),
+        );
+    }
+
+    /** @param array<string, mixed> $data */
+    private static function requiredString(array $data, string $key): string
+    {
+        $value = $data[$key] ?? null;
+
+        if (! is_string($value)) {
+            throw new InvalidArgumentException("The {$key} field must be a string.");
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $data */
+    private static function nullableString(array $data, string $key): ?string
+    {
+        $value = $data[$key] ?? null;
+
+        if ($value !== null && ! is_string($value)) {
+            throw new InvalidArgumentException("The {$key} field must be a string or null.");
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $data */
+    private static function eventStatus(array $data): EventStatus
+    {
+        $value = $data['status'] ?? null;
+
+        if ($value instanceof EventStatus) {
+            return $value;
+        }
+
+        if (! is_string($value)) {
+            throw new InvalidArgumentException('The status field must be a valid event status.');
+        }
+
+        return EventStatus::from($value);
     }
 }

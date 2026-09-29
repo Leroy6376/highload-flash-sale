@@ -10,8 +10,10 @@ use App\Domain\Catalog\Models\Event;
 use App\Domain\Catalog\Models\TicketType;
 use App\Domain\Identity\Enums\UserRole;
 use App\Domain\Identity\Models\User;
+use App\Domain\Shared\Images\Models\Image;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -123,8 +125,11 @@ class TicketTypeControllerTest extends TestCase
     #[Test]
     public function destroy_removes_a_ticket_type_for_a_catalog_manager(): void
     {
+        Storage::fake('public');
         $event = Event::factory()->published()->create();
         $ticketType = TicketType::factory()->for($event)->create();
+        $image = Image::factory()->for($ticketType, 'imageable')->create();
+        Storage::disk('public')->put($image->path, 'ticket type image');
         $user = $this->userWithRole(UserRole::CatalogManager);
 
         $this->withToken($user->createToken('test')->plainTextToken)
@@ -132,6 +137,8 @@ class TicketTypeControllerTest extends TestCase
             ->assertNoContent();
 
         $this->assertDatabaseMissing('ticket_types', ['id' => $ticketType->id]);
+        $this->assertDatabaseMissing('images', ['id' => $image->id]);
+        Storage::disk('public')->assertMissing($image->path);
     }
 
     /**

@@ -12,6 +12,7 @@ use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Images\Models\Image;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -139,14 +140,25 @@ class EventControllerTest extends TestCase
     #[Test]
     public function destroy_removes_an_event_for_a_catalog_manager(): void
     {
+        Storage::fake('public');
         $user = $this->userWithRole(UserRole::CatalogManager);
         $event = Event::factory()->create();
+        $eventImage = Image::factory()->for($event, 'imageable')->create();
+        $ticketType = TicketType::factory()->for($event)->create();
+        $ticketTypeImage = Image::factory()->for($ticketType, 'imageable')->create();
+        Storage::disk('public')->put($eventImage->path, 'event image');
+        Storage::disk('public')->put($ticketTypeImage->path, 'ticket type image');
 
         $this->withToken($user->createToken('test')->plainTextToken)
             ->deleteJson('/api/v1/catalog/events/'.$event->slug)
             ->assertNoContent();
 
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
+        $this->assertDatabaseMissing('ticket_types', ['id' => $ticketType->id]);
+        $this->assertDatabaseMissing('images', ['id' => $eventImage->id]);
+        $this->assertDatabaseMissing('images', ['id' => $ticketTypeImage->id]);
+        Storage::disk('public')->assertMissing($eventImage->path);
+        Storage::disk('public')->assertMissing($ticketTypeImage->path);
     }
 
     /**
