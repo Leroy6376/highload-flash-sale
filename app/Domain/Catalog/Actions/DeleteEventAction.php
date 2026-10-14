@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Catalog\Actions;
 
+use App\Domain\Catalog\Contracts\TicketAllocationReader;
+use App\Domain\Catalog\Exceptions\CatalogConstraintViolation;
 use App\Domain\Catalog\Models\Event;
 use App\Domain\Catalog\Models\TicketType;
 use App\Domain\Shared\Images\Actions\DeleteImageAction;
@@ -14,11 +16,15 @@ final readonly class DeleteEventAction
     public function __construct(
         private DeleteImageAction $deleteImage,
         private DeleteTicketTypeAction $deleteTicketType,
+        private TicketAllocationReader $ticketAllocationReader,
     ) {}
 
     public function handle(Event $event): void
     {
         DB::transaction(function () use ($event): void {
+            if ($this->ticketAllocationReader->hasOrderHistoryForEvent($event)) {
+                throw new CatalogConstraintViolation('Events with order history cannot be deleted.');
+            }
             foreach ($event->images()->get() as $image) {
                 $this->deleteImage->handle($image);
             }

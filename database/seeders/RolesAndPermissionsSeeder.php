@@ -37,6 +37,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'catalog.ticket-types.create',
             'catalog.ticket-types.update',
             'catalog.ticket-types.delete',
+            'orders.view',
+            'orders.payment-confirm',
         ];
         foreach ($permissions as $permission) {
             Permission::findOrCreate($permission, self::GuardName);
@@ -55,6 +57,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'catalog.ticket-types.create',
             'catalog.ticket-types.update',
             'catalog.ticket-types.delete',
+            'orders.view',
+            'orders.payment-confirm',
         ]);
         Role::findOrCreate(UserRole::Customer->value, self::GuardName);
     }

@@ -184,6 +184,7 @@ INTRO,
         // Note: does not work for `external` docs types
         'order' => [
             'Authentication' => [
+                'Registration',
                 'Session',
                 'Current user',
                 'Access tokens',
@@ -192,6 +193,10 @@ INTRO,
                 'Events',
                 'Ticket types',
                 'Images',
+            ],
+            'Orders' => [
+                'Cart',
+                'Orders',
             ],
         ],
     ],

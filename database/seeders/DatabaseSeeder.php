@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             CatalogSeeder::class,
             RolesAndPermissionsSeeder::class,
             InitialAdminSeeder::class,
+            CustomerSeeder::class,
+            OrdersSeeder::class,
         ]);
     }
 }

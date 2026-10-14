@@ -10,6 +10,12 @@ use App\Domain\Catalog\Models\Event;
 use App\Domain\Catalog\Models\TicketType;
 use App\Domain\Identity\Enums\UserRole;
 use App\Domain\Identity\Models\User;
+use App\Domain\Orders\Enums\CartStatus;
+use App\Domain\Orders\Enums\OrderStatus;
+use App\Domain\Orders\Models\Cart;
+use App\Domain\Orders\Models\CartItem;
+use App\Domain\Orders\Models\Order;
+use App\Domain\Orders\Models\OrderItem;
 use App\Domain\Shared\Images\Models\Image;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -139,6 +145,59 @@ class TicketTypeControllerTest extends TestCase
         $this->assertDatabaseMissing('ticket_types', ['id' => $ticketType->id]);
         $this->assertDatabaseMissing('images', ['id' => $image->id]);
         Storage::disk('public')->assertMissing($image->path);
+    }
+
+    #[Test]
+    public function update_to_disabled_expires_related_active_carts_and_pending_orders(): void
+    {
+        $event = Event::factory()->published()->create();
+        $ticketType = TicketType::factory()->active()->for($event)->create();
+        $cart = Cart::factory()->create();
+        CartItem::factory()->for($cart)->for($ticketType, 'ticketType')->create();
+        $order = Order::factory()->create();
+        OrderItem::factory()->for($order)->for($ticketType, 'ticketType')->create();
+        $user = $this->userWithRole(UserRole::CatalogManager);
+
+        $this->withToken($user->createToken('test')->plainTextToken)
+            ->patchJson('/api/v1/catalog/events/'.$event->slug.'/ticket-types/'.$ticketType->slug, $this->ticketTypePayload(['status' => TicketTypeStatus::Disabled->value]))
+            ->assertOk();
+
+        $this->assertDatabaseHas('carts', ['id' => $cart->id, 'status' => CartStatus::Expired->value]);
+        $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => OrderStatus::Expired->value]);
+    }
+
+    #[Test]
+    public function update_returns_422_when_capacity_is_lower_than_allocated_tickets(): void
+    {
+        $event = Event::factory()->published()->create();
+        $ticketType = TicketType::factory()->active()->for($event)->create(['capacity' => 10]);
+        $cart = Cart::factory()->create();
+        CartItem::factory()->for($cart)->for($ticketType, 'ticketType')->create(['quantity' => 2]);
+        $user = $this->userWithRole(UserRole::CatalogManager);
+
+        $this->withToken($user->createToken('test')->plainTextToken)
+            ->patchJson('/api/v1/catalog/events/'.$event->slug.'/ticket-types/'.$ticketType->slug, $this->ticketTypePayload(['capacity' => 1]))
+            ->assertUnprocessable()
+            ->assertJsonPath('detail', 'Capacity cannot be lower than allocated tickets.');
+
+        $this->assertDatabaseHas('ticket_types', ['id' => $ticketType->id, 'capacity' => 10]);
+    }
+
+    #[Test]
+    public function destroy_returns_422_when_ticket_type_has_order_history(): void
+    {
+        $event = Event::factory()->published()->create();
+        $ticketType = TicketType::factory()->for($event)->create();
+        $order = Order::factory()->create();
+        OrderItem::factory()->for($order)->for($ticketType, 'ticketType')->create();
+        $user = $this->userWithRole(UserRole::CatalogManager);
+
+        $this->withToken($user->createToken('test')->plainTextToken)
+            ->deleteJson('/api/v1/catalog/events/'.$event->slug.'/ticket-types/'.$ticketType->slug)
+            ->assertUnprocessable()
+            ->assertJsonPath('detail', 'Ticket types with order history cannot be deleted.');
+
+        $this->assertModelExists($ticketType);
     }
 
     /**

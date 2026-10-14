@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Highload Flash Sale API",
-        "_postman_id": "3880b321-c758-47e0-a996-e83c11c914e0",
+        "_postman_id": "c30d87d7-78af-44f2-bf6a-d9ad0970dfe8",
         "description": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f HTTP API \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u044f.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -20,11 +20,67 @@
             "description": "",
             "item": [
                 {
+                    "name": "Registration",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0443\u043f\u0430\u0442\u0435\u043b\u044f",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/register",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/register"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"device_name\":\"iPhone 17\",\"email\":\"ivan.petrov@example.test\",\"name\":\"\u0418\u0432\u0430\u043d \u041f\u0435\u0442\u0440\u043e\u0432\",\"password\":\"secret-password\",\"password_confirmation\":\"secret-password\"}"
+                                },
+                                "description": "\u0421\u043e\u0437\u0434\u0430\u0451\u0442 customer-\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u0438 \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 Bearer-\u0442\u043e\u043a\u0435\u043d.",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\"token\":\"1|example-access-token\",\"token_type\":\"Bearer\",\"expires_at\":\"2026-10-12T12:15:00.000000Z\",\"user\":{\"id\":1,\"name\":\"\\u0418\\u0432\\u0430\\u043d \\u041f\\u0435\\u0442\\u0440\\u043e\\u0432\",\"email\":\"ivan.petrov@example.test\",\"roles\":[\"customer\"]}}",
+                                    "name": "Customer registered."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unprocessable Content\",\"status\":422,\"detail\":\"The request contains invalid fields.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/login\",\"request_id\":\"01JEXAMPLE0000000000000000\",\"errors\":[{\"detail\":\"The email field is required.\",\"pointer\":\"#\\\/email\"}]}",
+                                    "name": "Validation failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 429,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Too Many Requests\",\"status\":429,\"detail\":\"Too many requests. Please try again later.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/register\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Registration rate limit exceeded."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "name": "Session",
                     "description": "",
                     "item": [
                         {
-                            "name": "POST api\/v1\/auth\/login",
+                            "name": "\u0412\u0445\u043e\u0434",
                             "request": {
                                 "url": {
                                     "host": "{{baseUrl}}",
@@ -47,7 +103,7 @@
                                     "mode": "raw",
                                     "raw": "{\"email\":\"gbailey@example.net\",\"password\":\"|]|{+-\",\"device_name\":\"v\"}"
                                 },
-                                "description": "",
+                                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 Bearer-\u0442\u043e\u043a\u0435\u043d \u0434\u043b\u044f \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0449\u0435\u0433\u043e \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f.",
                                 "auth": {
                                     "type": "noauth"
                                 }
@@ -323,7 +379,7 @@
                                         },
                                         {
                                             "key": "x-request-id",
-                                            "value": "01M2G1BDSRZ9VT0B1K5KGW4FC2"
+                                            "value": "01M4R4Y3FGW8RCT9A2V1S1NZXB"
                                         },
                                         {
                                             "key": "access-control-allow-origin",
@@ -387,7 +443,7 @@
                                         }
                                     ],
                                     "code": 404,
-                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\",\"request_id\":\"01M2G1BDSRZ9VT0B1K5KGW4FC2\"}",
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\",\"request_id\":\"01M4R4Y3FGW8RCT9A2V1S1NZXB\"}",
                                     "name": ""
                                 }
                             ]
@@ -414,7 +470,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"slug\":\"b\",\"title\":\"n\",\"short_description\":\"g\",\"description\":\"Eius et animi quos velit et.\",\"timezone\":\"America\\\/Caracas\",\"starts_at\":\"2026-09-14T13:22:52\",\"ends_at\":\"2052-10-07\",\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"draft\"}"
+                                    "raw": "{\"slug\":\"b\",\"title\":\"n\",\"short_description\":\"g\",\"description\":\"Eius et animi quos velit et.\",\"timezone\":\"America\\\/Caracas\",\"starts_at\":\"2026-10-12T13:30:49\",\"ends_at\":\"2052-11-04\",\"sales_starts_at\":\"2026-10-12T13:30:49\",\"sales_ends_at\":\"2052-11-04\",\"status\":\"completed\"}"
                                 },
                                 "description": ""
                             },
@@ -450,7 +506,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"slug\":\"b\",\"title\":\"n\",\"short_description\":\"g\",\"description\":\"Eius et animi quos velit et.\",\"timezone\":\"America\\\/Caracas\",\"starts_at\":\"2026-09-14T13:22:52\",\"ends_at\":\"2052-10-07\",\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"cancelled\"}"
+                                    "raw": "{\"slug\":\"b\",\"title\":\"n\",\"short_description\":\"g\",\"description\":\"Eius et animi quos velit et.\",\"timezone\":\"America\\\/Caracas\",\"starts_at\":\"2026-10-12T13:30:49\",\"ends_at\":\"2052-11-04\",\"sales_starts_at\":\"2026-10-12T13:30:49\",\"sales_ends_at\":\"2052-11-04\",\"status\":\"completed\"}"
                                 },
                                 "description": ""
                             },
@@ -559,7 +615,7 @@
                                         }
                                     ],
                                     "code": 404,
-                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\\\/ticket-types\",\"request_id\":\"01M2G1BDSRZ9VT0B1K5KGW4FC2\"}",
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\\\/ticket-types\",\"request_id\":\"01M4R4Y3FGW8RCT9A2V1S1NZXB\"}",
                                     "name": ""
                                 }
                             ]
@@ -621,7 +677,7 @@
                                         }
                                     ],
                                     "code": 404,
-                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\\\/ticket-types\\\/architecto\",\"request_id\":\"01M2G1BDSRZ9VT0B1K5KGW4FC2\"}",
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/catalog\\\/events\\\/architecto\\\/ticket-types\\\/architecto\",\"request_id\":\"01M4R4Y3FGW8RCT9A2V1S1NZXB\"}",
                                     "name": ""
                                 }
                             ]
@@ -656,7 +712,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"slug\":\"b\",\"name\":\"n\",\"description\":\"Eius et animi quos velit et.\",\"price_amount\":60,\"currency\":\"RUB\",\"capacity\":26,\"sales_limit_per_user\":40,\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"active\"}"
+                                    "raw": "{\"slug\":\"b\",\"name\":\"n\",\"description\":\"Eius et animi quos velit et.\",\"price_amount\":60,\"currency\":\"RUB\",\"capacity\":26,\"sales_limit_per_user\":40,\"sales_starts_at\":\"2026-10-12T13:30:49\",\"sales_ends_at\":\"2052-11-04\",\"status\":\"draft\"}"
                                 },
                                 "description": ""
                             },
@@ -698,7 +754,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"slug\":\"b\",\"name\":\"n\",\"description\":\"Eius et animi quos velit et.\",\"price_amount\":60,\"currency\":\"RUB\",\"capacity\":26,\"sales_limit_per_user\":40,\"sales_starts_at\":\"2026-09-14T13:22:52\",\"sales_ends_at\":\"2052-10-07\",\"status\":\"draft\"}"
+                                    "raw": "{\"slug\":\"b\",\"name\":\"n\",\"description\":\"Eius et animi quos velit et.\",\"price_amount\":60,\"currency\":\"RUB\",\"capacity\":26,\"sales_limit_per_user\":40,\"sales_starts_at\":\"2026-10-12T13:30:49\",\"sales_ends_at\":\"2052-11-04\",\"status\":\"draft\"}"
                                 },
                                 "description": ""
                             },
@@ -782,7 +838,7 @@
                                     "formdata": [
                                         {
                                             "key": "collection",
-                                            "value": "announcement",
+                                            "value": "gallery",
                                             "type": "text",
                                             "description": ""
                                         },
@@ -967,7 +1023,7 @@
                                     "formdata": [
                                         {
                                             "key": "collection",
-                                            "value": "announcement",
+                                            "value": "gallery",
                                             "type": "text",
                                             "description": ""
                                         },
@@ -1042,7 +1098,7 @@
                                     "formdata": [
                                         {
                                             "key": "collection",
-                                            "value": "gallery",
+                                            "value": "announcement",
                                             "type": "text",
                                             "description": ""
                                         },
@@ -1124,6 +1180,518 @@
                                 }
                             },
                             "response": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Orders",
+            "description": "",
+            "item": [
+                {
+                    "name": "Cart",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "\u0422\u0435\u043a\u0443\u0449\u0430\u044f \u043a\u043e\u0440\u0437\u0438\u043d\u0430",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/cart",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/cart"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u0443\u044e \u043a\u043e\u0440\u0437\u0438\u043d\u0443 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u0438\u043b\u0438 `data: null`, \u0435\u0441\u043b\u0438 \u0435\u0451 \u043d\u0435\u0442."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0ce0-7357-9126-4d1a1495c2d8\",\"status\":\"active\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0cee-72a1-8f46-bf17eb1592d5\",\"ticket_type_id\":\"01a1304f-0cec-72b9-a9bb-7cc2d7a87885\",\"quantity\":4}]}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0431\u0438\u043b\u0435\u0442",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/cart\/items",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/cart\/items"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"quantity\":2,\"ticket_type_id\":\"00000000-0000-0000-0000-000000000001\"}"
+                                },
+                                "description": "\u0414\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u0442 \u0442\u0438\u043f \u0431\u0438\u043b\u0435\u0442\u0430 \u0432 \u0430\u043a\u0442\u0438\u0432\u043d\u0443\u044e \u043a\u043e\u0440\u0437\u0438\u043d\u0443 \u0438\u043b\u0438 \u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u0442 \u0435\u0433\u043e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e. \u0420\u0435\u0437\u0435\u0440\u0432 \u0434\u0435\u0439\u0441\u0442\u0432\u0443\u0435\u0442 15 \u043c\u0438\u043d\u0443\u0442 \u043f\u043e\u0441\u043b\u0435 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0d05-7141-af6a-6b1cb342ed32\",\"status\":\"active\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0d0d-7290-9812-1c7e6a4a9ef5\",\"ticket_type_id\":\"01a1304f-0d0b-70bf-9271-9b9b995391ce\",\"quantity\":3}]}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Conflict\",\"status\":409,\"detail\":\"The cart is empty or has expired.\",\"instance\":\"\\\/api\\\/v1\\\/cart\\\/checkout\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Ticket cannot be reserved."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unprocessable Content\",\"status\":422,\"detail\":\"The request contains invalid fields.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/login\",\"request_id\":\"01JEXAMPLE0000000000000000\",\"errors\":[{\"detail\":\"The email field is required.\",\"pointer\":\"#\\\/email\"}]}",
+                                    "name": "Validation failed."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u0418\u0437\u043c\u0435\u043d\u0438\u0442\u044c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/cart\/items\/:cartItem_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/cart\/items\/:cartItem_id",
+                                    "variable": [
+                                        {
+                                            "id": "cartItem_id",
+                                            "key": "cartItem_id",
+                                            "value": "00000000-0000-0000-0000-000000000001",
+                                            "description": "UUID \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u043a\u043e\u0440\u0437\u0438\u043d\u044b."
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"quantity\":3}"
+                                },
+                                "description": "\u0418\u0437\u043c\u0435\u043d\u044f\u0435\u0442 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u0438\u043b\u0435\u0442\u043e\u0432 \u0432 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0439 \u043a\u043e\u0440\u0437\u0438\u043d\u0435."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0d24-7164-ba58-5e5a847f3758\",\"status\":\"active\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0d2d-707d-980c-3cf4462c72df\",\"ticket_type_id\":\"01a1304f-0d2b-70d7-9412-1ea376e9b1db\",\"quantity\":4}]}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Cart item not found."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Conflict\",\"status\":409,\"detail\":\"The cart is empty or has expired.\",\"instance\":\"\\\/api\\\/v1\\\/cart\\\/checkout\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Cart item is no longer active or ticket cannot be reserved."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unprocessable Content\",\"status\":422,\"detail\":\"The request contains invalid fields.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/login\",\"request_id\":\"01JEXAMPLE0000000000000000\",\"errors\":[{\"detail\":\"The email field is required.\",\"pointer\":\"#\\\/email\"}]}",
+                                    "name": "Validation failed."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u0423\u0434\u0430\u043b\u0438\u0442\u044c \u0431\u0438\u043b\u0435\u0442",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/cart\/items\/:cartItem_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/cart\/items\/:cartItem_id",
+                                    "variable": [
+                                        {
+                                            "id": "cartItem_id",
+                                            "key": "cartItem_id",
+                                            "value": "00000000-0000-0000-0000-000000000001",
+                                            "description": "UUID \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u043a\u043e\u0440\u0437\u0438\u043d\u044b."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "\u0423\u0434\u0430\u043b\u044f\u0435\u0442 \u043f\u043e\u0437\u0438\u0446\u0438\u044e \u0438\u0437 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0439 \u043a\u043e\u0440\u0437\u0438\u043d\u044b."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": null,
+                                    "name": "Cart item removed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Cart item not found."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Conflict\",\"status\":409,\"detail\":\"The cart is empty or has expired.\",\"instance\":\"\\\/api\\\/v1\\\/cart\\\/checkout\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Cart item is no longer active."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u041e\u0444\u043e\u0440\u043c\u0438\u0442\u044c \u043a\u043e\u0440\u0437\u0438\u043d\u0443",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/cart\/checkout",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/cart\/checkout"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "\u0421\u043e\u0437\u0434\u0430\u0451\u0442 \u0437\u0430\u043a\u0430\u0437 \u0432 \u0441\u0442\u0430\u0442\u0443\u0441\u0435 `pending_payment` \u0438 \u043f\u0435\u0440\u0435\u0432\u043e\u0434\u0438\u0442 \u043a\u043e\u0440\u0437\u0438\u043d\u0443 \u0432 `checked_out`. \u0420\u0435\u0437\u0435\u0440\u0432 \u0437\u0430\u043a\u0430\u0437\u0430 \u0434\u0435\u0439\u0441\u0442\u0432\u0443\u0435\u0442 15 \u043c\u0438\u043d\u0443\u0442."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0d4a-71e4-b86c-5007ee40e1ff\",\"status\":\"pending_payment\",\"total_amount\":26768,\"currency\":\"RUB\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"paid_at\":null,\"cancelled_at\":null,\"expired_at\":null,\"created_at\":\"2026-10-12T13:30:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0d53-7125-959f-a054dd41eb2c\",\"ticket_type_id\":\"01a1304f-0d51-70cc-b6c0-a65a924b3323\",\"ticket_type_name\":\"et modi\",\"unit_price_amount\":4940,\"currency\":\"RUB\",\"quantity\":3}]}}",
+                                    "name": "Order created."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Conflict\",\"status\":409,\"detail\":\"The cart is empty or has expired.\",\"instance\":\"\\\/api\\\/v1\\\/cart\\\/checkout\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Cart cannot be checked out."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Orders",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "\u0421\u043f\u0438\u0441\u043e\u043a \u0437\u0430\u043a\u0430\u0437\u043e\u0432",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/orders",
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1",
+                                            "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b.",
+                                            "disabled": false
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u0430\u043a\u0430\u0437\u043e\u0432 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435 (\u043e\u0442 1 \u0434\u043e 100).",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/orders?page=1&per_page=15"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"page\":16,\"per_page\":22}"
+                                },
+                                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0437\u0430\u043a\u0430\u0437\u044b \u0442\u0435\u043a\u0443\u0449\u0435\u0433\u043e \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f, \u043e\u0442 \u043d\u043e\u0432\u044b\u0445 \u043a \u0441\u0442\u0430\u0440\u044b\u043c."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":[{\"id\":\"01a1304f-0d72-723b-bb42-05de7a0f3b99\",\"status\":\"pending_payment\",\"total_amount\":11278,\"currency\":\"RUB\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"paid_at\":null,\"cancelled_at\":null,\"expired_at\":null,\"created_at\":\"2026-10-12T13:30:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0d79-7292-a08e-33cd1974e3e6\",\"ticket_type_id\":\"01a1304f-0d78-72a8-a58f-4418df04a56c\",\"ticket_type_name\":\"perspiciatis quo\",\"unit_price_amount\":13618,\"currency\":\"RUB\",\"quantity\":1}]},{\"id\":\"01a1304f-0d80-7388-82f1-52f4d72a3f9d\",\"status\":\"pending_payment\",\"total_amount\":12249,\"currency\":\"RUB\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"paid_at\":null,\"cancelled_at\":null,\"expired_at\":null,\"created_at\":\"2026-10-12T13:30:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0d86-70ee-a5df-bbcf6dc5a5c0\",\"ticket_type_id\":\"01a1304f-0d85-701e-9461-81ea294ae3be\",\"ticket_type_name\":\"id aspernatur\",\"unit_price_amount\":1030,\"currency\":\"RUB\",\"quantity\":1}]}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":15,\"to\":2,\"total\":2}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unprocessable Content\",\"status\":422,\"detail\":\"The request contains invalid fields.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/login\",\"request_id\":\"01JEXAMPLE0000000000000000\",\"errors\":[{\"detail\":\"The email field is required.\",\"pointer\":\"#\\\/email\"}]}",
+                                    "name": "Validation failed."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0437\u0430\u043a\u0430\u0437",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/orders\/:order_id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/orders\/:order_id",
+                                    "variable": [
+                                        {
+                                            "id": "order_id",
+                                            "key": "order_id",
+                                            "value": "00000000-0000-0000-0000-000000000001",
+                                            "description": "UUID \u0437\u0430\u043a\u0430\u0437\u0430."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0437\u0430\u043a\u0430\u0437 \u0442\u0435\u043a\u0443\u0449\u0435\u0433\u043e \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u0432\u043c\u0435\u0441\u0442\u0435 \u0441 \u0435\u0433\u043e \u043f\u043e\u0437\u0438\u0446\u0438\u044f\u043c\u0438."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0d9a-73af-b73e-300080206c09\",\"status\":\"pending_payment\",\"total_amount\":26768,\"currency\":\"RUB\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"paid_at\":null,\"cancelled_at\":null,\"expired_at\":null,\"created_at\":\"2026-10-12T13:30:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0da2-71d9-b789-b9929f49e075\",\"ticket_type_id\":\"01a1304f-0da0-708e-aa15-742af1aa9dad\",\"ticket_type_name\":\"autem et\",\"unit_price_amount\":15373,\"currency\":\"RUB\",\"quantity\":3}]}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Order not found."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u041e\u0442\u043c\u0435\u043d\u0438\u0442\u044c \u0437\u0430\u043a\u0430\u0437",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/orders\/:order_id\/cancellations",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/orders\/:order_id\/cancellations",
+                                    "variable": [
+                                        {
+                                            "id": "order_id",
+                                            "key": "order_id",
+                                            "value": "00000000-0000-0000-0000-000000000001",
+                                            "description": "UUID \u0437\u0430\u043a\u0430\u0437\u0430."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "\u041e\u0442\u043c\u0435\u043d\u044f\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043a\u0430\u0437 \u0432 \u0441\u0442\u0430\u0442\u0443\u0441\u0435 `pending_payment` \u0441 \u043d\u0435\u0438\u0441\u0442\u0451\u043a\u0448\u0438\u043c \u0440\u0435\u0437\u0435\u0440\u0432\u043e\u043c."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0db3-739a-a7ff-f060a4463568\",\"status\":\"pending_payment\",\"total_amount\":26768,\"currency\":\"RUB\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"paid_at\":null,\"cancelled_at\":null,\"expired_at\":null,\"created_at\":\"2026-10-12T13:30:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0dba-7154-8424-575a03a2e9c0\",\"ticket_type_id\":\"01a1304f-0db8-702e-b2c4-6ccb86864fc0\",\"ticket_type_name\":\"enim non\",\"unit_price_amount\":2908,\"currency\":\"RUB\",\"quantity\":4}]}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Order not found."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Conflict\",\"status\":409,\"detail\":\"The cart is empty or has expired.\",\"instance\":\"\\\/api\\\/v1\\\/cart\\\/checkout\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Order cannot be cancelled."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c \u043e\u043f\u043b\u0430\u0442\u0443",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/orders\/:order_id\/payment-confirmations",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/orders\/:order_id\/payment-confirmations",
+                                    "variable": [
+                                        {
+                                            "id": "order_id",
+                                            "key": "order_id",
+                                            "value": "00000000-0000-0000-0000-000000000001",
+                                            "description": "UUID \u0437\u0430\u043a\u0430\u0437\u0430."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "\u041f\u0435\u0440\u0435\u0432\u043e\u0434\u0438\u0442 \u043d\u0435\u0438\u0441\u0442\u0451\u043a\u0448\u0438\u0439 \u0437\u0430\u043a\u0430\u0437 \u0438\u0437 `pending_payment` \u0432 `paid`. \u0422\u0440\u0435\u0431\u0443\u0435\u0442 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0438\u0435 `orders.payment-confirm`."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"data\":{\"id\":\"01a1304f-0dcd-7274-9ce9-9bda0edc8bf1\",\"status\":\"pending_payment\",\"total_amount\":26768,\"currency\":\"RUB\",\"expires_at\":\"2026-10-12T13:45:49.000000Z\",\"paid_at\":null,\"cancelled_at\":null,\"expired_at\":null,\"created_at\":\"2026-10-12T13:30:49.000000Z\",\"items\":[{\"id\":\"01a1304f-0dd4-7103-b927-0e65fc6a8683\",\"ticket_type_id\":\"01a1304f-0dd2-7170-86a5-c996bc30119f\",\"ticket_type_name\":\"ex voluptatem\",\"unit_price_amount\":2301,\"currency\":\"RUB\",\"quantity\":1}]}}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication failed.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/me\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Authentication failed."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 403,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Forbidden\",\"status\":403,\"detail\":\"You are not allowed to perform this action.\",\"instance\":\"\\\/api\\\/v1\\\/orders\\\/00000000-0000-0000-0000-000000000001\\\/payment-confirmations\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Missing orders.payment-confirm permission."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"The requested resource was not found.\",\"instance\":\"\\\/api\\\/v1\\\/auth\\\/tokens\\\/1\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Order not found."
+                                },
+                                {
+                                    "header": [],
+                                    "code": 409,
+                                    "body": "{\"type\":\"about:blank\",\"title\":\"Conflict\",\"status\":409,\"detail\":\"The cart is empty or has expired.\",\"instance\":\"\\\/api\\\/v1\\\/cart\\\/checkout\",\"request_id\":\"01JEXAMPLE0000000000000000\"}",
+                                    "name": "Order cannot be paid."
+                                }
+                            ]
                         }
                     ]
                 }

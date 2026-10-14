@@ -30,6 +30,13 @@ services:
     volumes:
       - laravel-storage:/var/www/storage
 
+  scheduler:
+    <<: *app
+    profiles: [fpm]
+    command: ["php", "artisan", "schedule:work"]
+    volumes:
+      - laravel-storage:/var/www/storage
+
   postgres:
     image: postgres:17-alpine
     profiles: [fpm, postgres]

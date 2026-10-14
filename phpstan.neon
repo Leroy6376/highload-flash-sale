@@ -49,7 +49,7 @@ parameters:
     ignoreErrors:
         -
             identifier: staticMethod.dynamicCall
-            message: '#::(published|active|chronological)\(\)#'
+            message: '#::(active|chronological|exists|firstOrFail|lockForUpdate|orderBy|orderByDesc|pluck|published|select|sum|whereIn)\(\)#'
 
 services:
     -

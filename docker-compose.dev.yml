@@ -21,6 +21,23 @@ services:
       - ./vendor:/var/www/vendor
       - laravel-storage-dev:/var/www/storage
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: app-dev
+    environment:
+      XDEBUG_MODE: off
+      LOG_CHANNEL: stderr
+      LOG_DEPRECATIONS_CHANNEL: stderr
+      LOG_LEVEL: debug
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./:/var/www
+      - ./vendor:/var/www/vendor
+      - laravel-storage-dev:/var/www/storage
+
   postgres:
     command:
       - postgres

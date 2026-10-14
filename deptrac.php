@@ -20,6 +20,15 @@ return static function (DeptracConfig $config): void {
             $catalogActions = Layer::withName('Catalog Actions')->collectors(
                 DirectoryConfig::create('app/Domain/Catalog/Actions/.*'),
             ),
+            $ordersCore = Layer::withName('Orders Core')->collectors(
+                DirectoryConfig::create('app/Domain/Orders/(?!Actions|Data).*'),
+            ),
+            $ordersData = Layer::withName('Orders Data')->collectors(
+                DirectoryConfig::create('app/Domain/Orders/Data/.*'),
+            ),
+            $ordersActions = Layer::withName('Orders Actions')->collectors(
+                DirectoryConfig::create('app/Domain/Orders/Actions/.*'),
+            ),
             $identityCore = Layer::withName('Identity Core')->collectors(
                 DirectoryConfig::create('app/Domain/Identity/(?!Actions|Data).*'),
             ),
@@ -49,6 +58,9 @@ return static function (DeptracConfig $config): void {
             Ruleset::forLayer($catalogCore)->accesses($catalogCore, $sharedCore),
             Ruleset::forLayer($catalogData)->accesses($catalogCore, $catalogData),
             Ruleset::forLayer($catalogActions)->accesses($catalogCore, $catalogData, $catalogActions, $sharedCore, $sharedActions),
+            Ruleset::forLayer($ordersCore)->accesses($catalogCore, $identityCore, $ordersCore),
+            Ruleset::forLayer($ordersData)->accesses($ordersCore, $ordersData),
+            Ruleset::forLayer($ordersActions)->accesses($catalogCore, $identityCore, $ordersCore, $ordersData, $ordersActions),
             Ruleset::forLayer($identityCore)->accesses($identityCore),
             Ruleset::forLayer($identityData)->accesses($identityCore, $identityData),
             Ruleset::forLayer($identityActions)->accesses($identityCore, $identityData, $identityActions),
@@ -59,6 +71,9 @@ return static function (DeptracConfig $config): void {
                 $catalogCore,
                 $catalogData,
                 $catalogActions,
+                $ordersCore,
+                $ordersData,
+                $ordersActions,
                 $identityCore,
                 $identityData,
                 $identityActions,
@@ -70,6 +85,9 @@ return static function (DeptracConfig $config): void {
                 $catalogCore,
                 $catalogData,
                 $catalogActions,
+                $ordersCore,
+                $ordersData,
+                $ordersActions,
                 $identityCore,
                 $identityData,
                 $identityActions,

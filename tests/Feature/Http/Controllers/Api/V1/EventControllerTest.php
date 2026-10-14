@@ -9,6 +9,12 @@ use App\Domain\Catalog\Models\Event;
 use App\Domain\Catalog\Models\TicketType;
 use App\Domain\Identity\Enums\UserRole;
 use App\Domain\Identity\Models\User;
+use App\Domain\Orders\Enums\CartStatus;
+use App\Domain\Orders\Enums\OrderStatus;
+use App\Domain\Orders\Models\Cart;
+use App\Domain\Orders\Models\CartItem;
+use App\Domain\Orders\Models\Order;
+use App\Domain\Orders\Models\OrderItem;
 use App\Domain\Shared\Images\Models\Image;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -159,6 +165,42 @@ class EventControllerTest extends TestCase
         $this->assertDatabaseMissing('images', ['id' => $ticketTypeImage->id]);
         Storage::disk('public')->assertMissing($eventImage->path);
         Storage::disk('public')->assertMissing($ticketTypeImage->path);
+    }
+
+    #[Test]
+    public function update_to_cancelled_expires_related_active_carts_and_pending_orders(): void
+    {
+        $user = $this->userWithRole(UserRole::CatalogManager);
+        $event = Event::factory()->published()->create();
+        $ticketType = TicketType::factory()->active()->for($event)->create();
+        $cart = Cart::factory()->create();
+        CartItem::factory()->for($cart)->for($ticketType, 'ticketType')->create();
+        $order = Order::factory()->create();
+        OrderItem::factory()->for($order)->for($ticketType, 'ticketType')->create();
+
+        $this->withToken($user->createToken('test')->plainTextToken)
+            ->patchJson('/api/v1/catalog/events/'.$event->slug, $this->eventPayload(['status' => EventStatus::Cancelled->value]))
+            ->assertOk();
+
+        $this->assertDatabaseHas('carts', ['id' => $cart->id, 'status' => CartStatus::Expired->value]);
+        $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => OrderStatus::Expired->value]);
+    }
+
+    #[Test]
+    public function destroy_returns_422_when_event_has_order_history(): void
+    {
+        $user = $this->userWithRole(UserRole::CatalogManager);
+        $event = Event::factory()->create();
+        $ticketType = TicketType::factory()->for($event)->create();
+        $order = Order::factory()->create();
+        OrderItem::factory()->for($order)->for($ticketType, 'ticketType')->create();
+
+        $this->withToken($user->createToken('test')->plainTextToken)
+            ->deleteJson('/api/v1/catalog/events/'.$event->slug)
+            ->assertUnprocessable()
+            ->assertJsonPath('detail', 'Events with order history cannot be deleted.');
+
+        $this->assertModelExists($event);
     }
 
     /**

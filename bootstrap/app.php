@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domain\Catalog\Exceptions\CatalogConstraintViolation;
+use App\Domain\Orders\Exceptions\OrderConflictException;
 use App\Http\Middleware\AddRequestLogContext;
 use App\Http\Middleware\AuthorizeNestedParent;
 use App\Http\Responses\ProblemDetailsResponse;
@@ -56,6 +58,12 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             return ProblemDetailsResponse::make($request, 422, 'The request contains invalid fields.', $errors);
+        });
+        $exceptions->render(function (CatalogConstraintViolation $exception, Request $request) {
+            return $request->is('api/*') ? ProblemDetailsResponse::make($request, 422, $exception->getMessage()) : null;
+        });
+        $exceptions->render(function (OrderConflictException $exception, Request $request) {
+            return $request->is('api/*') ? ProblemDetailsResponse::make($request, 409, $exception->getMessage()) : null;
         });
         $exceptions->render(function (AuthenticationException $exception, Request $request) {
             return $request->is('api/*') ? ProblemDetailsResponse::make($request, 401, 'Authentication failed.') : null;
